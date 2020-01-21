@@ -7,7 +7,10 @@ class TodoList extends StatefulWidget {
 }
 
 class TodoListState extends State<TodoList> {
-  List<String> _todoItems = ['Hello'];
+  List<String> _todoItems = [
+    'Hello',
+    'Hello',
+  ];
 
   // This will be called each time the + button is pressed
   void _addTodoItem() {
@@ -22,11 +25,12 @@ class TodoListState extends State<TodoList> {
   // Build the whole list of todo items
   Widget _buildTodoList() {
     return new ListView.builder(
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         // itemBuilder will be automatically be called as many times as it takes for the
         // list to fill up its available space, which is most likely more than the
         // number of todo items we have. So, we need to check the index is OK.
-        if(index < _todoItems.length) {
+        if (index < _todoItems.length) {
           return _buildTodoItem(_todoItems[index]);
         }
       },
@@ -35,16 +39,9 @@ class TodoListState extends State<TodoList> {
 
   // Build a single todo item
   Widget _buildTodoItem(String todoText) {
-    // return new ListTile(
-    //   title: Card(
-    //     child: Padding(
-    //       padding: EdgeInsets.all(8.0),
-    //       child:Text(todoText)
-    //     )
-    //   )
-    // );
+
     return new CupertinoButton(
-      padding: EdgeInsets.all(32.0),
+      padding: EdgeInsets.only(bottom: 32.0, left: 32.0, right: 32.0),
       child: Container(
         height: 100,
         width: double.infinity,
@@ -52,24 +49,21 @@ class TodoListState extends State<TodoList> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            new BoxShadow( 
-              color: Colors.grey,
-              // offset, the X,Y coordinates to offset the shadow
-              offset: new Offset(0.0, 10.0), 
-              // blurRadius, the higher the number the more smeared look 
-              blurRadius: 15.0,
-              spreadRadius: 1.0
-            )
+            new BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                // offset, the X,Y coordinates to offset the shadow
+                offset: new Offset(0.0, 7.0),
+                // blurRadius, the higher the number the more smeared look
+                blurRadius: 10.0,
+                spreadRadius: 0.1)
           ],
         ),
         child: Container(
           margin: EdgeInsets.all(16.0),
           child: Text(
-            "Mindfulness",
+            "Work Out",
             style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w600),
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ),
       ),
@@ -81,16 +75,6 @@ class TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      // appBar: new AppBar(
-      //   title: new Text('Haha what!')
-      // ),
-      body: _buildTodoList(),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _addTodoItem,
-        tooltip: 'Add task',
-        child: new Icon(Icons.add)
-      ),
-    );
+    return _buildTodoList();
   }
 }
