@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class TodoList extends StatefulWidget {
+class CompletedList extends StatefulWidget {
   @override
-  createState() => new TodoListState();
+  createState() => new CompletedListState();
 }
 
-class TodoListState extends State<TodoList> {
-  List<String> _todoItems = [
+class CompletedListState extends State<CompletedList> {
+  List<String> _completed = [
     'Hello',
     'Hello',
   ];
 
   // This will be called each time the + button is pressed
-  void _addTodoItem() {
+  void _addCompletedItem() {
     // Putting our code inside "setState" tells the app that our state has changed, and
     // it will automatically re-render the list
     setState(() {
-      int index = _todoItems.length;
+      int index = _completed.length;
       // _todoItems.add('Item ' + index.toString());
     });
   }
 
   // Build the whole list of todo items
-  Widget _buildTodoList() {
+  Widget _buildCompletedList() {
     return new Column(
       children: <Widget>[
-        for (var item in _todoItems) _buildTodoItem(item)
+        for (var item in _completed) _buildCompletedItem(item)
       ],
     );
   }
 
-  // Build a single todo item
-  Widget _buildTodoItem(String todoText) {
+  // Build a single todo itemƒƒ
+  Widget _buildCompletedItem(String todoText) {
     return new Container(
       padding: EdgeInsets.only(bottom: 32.0, left: 32.0, right: 32.0),
       child: Container(
         height: 100,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.grey,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             new BoxShadow(
@@ -81,7 +81,45 @@ class TodoListState extends State<TodoList> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      
+                      Row(
+                        children: <Widget>[
+                          Material(
+                            color: Colors.grey,
+                            child: Center(
+                              child: Ink(
+                                  decoration: const ShapeDecoration(
+                                    shape: CircleBorder(),
+                                    color: Colors.white,
+                                  ),
+                                  child: IconButton(
+                                      icon: Icon(Icons.check),
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        print("hey there");
+                                      })),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Material(
+                              color: Colors.grey,
+                              child: Center(
+                                child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      shape: CircleBorder(),
+                                      color: Colors.white,
+                                    ),
+                                    child: IconButton(
+                                        icon: Icon(Icons.clear),
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          print("hey there");
+                                        })),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   )
                 ])),
@@ -91,6 +129,6 @@ class TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTodoList();
+    return _buildCompletedList();
   }
 }
