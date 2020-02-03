@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'dart:async';
+import 'dart:math';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException, SystemNavigator;
@@ -41,7 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   _launchURL() async {
-    print('1launch');
     const url = 'https://learningcalendar-development.auth0.com'
     +'/authorize?response_type=code'
     + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
@@ -53,6 +55,28 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  _base64URLEncode(str) {
+    var regexPlus = new RegExp(r'\+');
+    var regexBackslash = new RegExp(r'/');
+    var regexEqual = new RegExp(r'=');
+
+    return base64Url.encode(str)
+        .replaceAll(regexPlus, '-')
+        .replaceAll(regexBackslash, '_')
+        .replaceAll(regexEqual, '');
+  }
+
+  _generateCodeVerifier() {
+    var random = Random.secure();
+    var values = List<int>.generate(32, (i) => random.nextInt(256));
+
+    return _base64URLEncode(values);
+  }
+
+  _generateCodeChallenge(str) {
+    return _base64URLEncode(sha256.convert(ascii.encode(str)).bytes);
   }
 
   String _link;
