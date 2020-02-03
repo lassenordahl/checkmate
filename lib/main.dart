@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'todo.dart';
 import 'completed.dart';
 import 'addTask.dart';
+import 'login.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,7 @@ void main() {
 }
 
 class TodoApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(title: 'CS125 Project', home: new App());
