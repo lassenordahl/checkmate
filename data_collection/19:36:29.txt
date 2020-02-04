@@ -1,0 +1,202 @@
+1	18	6PM	personal	Call mom	3	1
+1	20	8PM	meeting	HackUCI club meeting	3	1
+1	21	9PM	work	Work at DBH	2	1
+1	18	6PM	exercise	Go for a run	3	0
+1	10	10AM	work	Work at DBH	4	0
+1	18	6PM	meeting	HackUCI club meeting	4	0
+1	10	10AM	academic	Study at Science Library	0	1
+1	20	8PM	meeting	HackUCI club meeting	3	0
+1	18	6PM	academic	Study for CS125 Midterm at Pheonix Grill	5	1
+1	21	9PM	exercise	Go rock climbing	3	1
+1	9	9AM	exercise	Go for a run	5	0
+1	23	11PM	academic	Study at Langson	6	0
+1	9	9AM	personal	Call mom	6	0
+1	17	5PM	exercise	Go rock climbing	4	0
+1	22	10PM	academic	Study for CS125 Midterm at Pheonix Grill	6	0
+1	9	9AM	personal	Go to dinner with roommates	0	0
+1	23	11PM	work	Work at DBH	1	0
+1	23	11PM	exercise	Go for a run	0	0
+1	8	8AM	personal	Call dad	4	0
+1	19	7PM	exercise	Go rock climbing	5	1
+1	18	6PM	academic	Study at Langson	3	1
+1	20	8PM	meeting	HackUCI club meeting	0	1
+1	8	8AM	personal	Call dad	5	0
+1	22	10PM	exercise	Work out at ARC	2	0
+1	10	10AM	work	Work at DBH	2	1
+1	21	9PM	exercise	Go rock climbing	6	0
+1	23	11PM	meeting	Photography club meeting	4	0
+1	19	7PM	exercise	Go for a run	5	1
+1	9	9AM	exercise	Go rock climbing	0	0
+1	9	9AM	meeting	HackUCI club meeting	6	0
+1	19	7PM	exercise	Go rock climbing	2	0
+1	20	8PM	academic	Study at Langson	2	1
+1	10	10AM	personal	Go to dinner with roommates	0	1
+1	21	9PM	work	Work at DBH	3	0
+1	17	5PM	work	Work at DBH	3	0
+1	22	10PM	meeting	Photography club meeting	6	0
+1	23	11PM	work	Work at Anteatery	0	0
+1	9	9AM	exercise	Go rock climbing	1	1
+1	21	9PM	personal	Go to dinner with roommates	5	1
+1	18	6PM	exercise	Go for a run	1	0
+1	21	9PM	personal	Go to dinner with roommates	1	0
+1	17	5PM	meeting	HackUCI club meeting	2	0
+1	20	8PM	personal	Go to dinner with roommates	0	1
+1	17	5PM	academic	Study for CS125 Midterm at Pheonix Grill	2	0
+1	8	8AM	work	Work at Anteatery	4	0
+1	20	8PM	meeting	Photography club meeting	4	0
+1	17	5PM	meeting	HackUCI club meeting	4	0
+1	17	5PM	personal	Call dad	4	0
+1	23	11PM	academic	Study for CS125 Midterm at Pheonix Grill	1	1
+1	19	7PM	work	Work at Anteatery	6	1
+1	20	8PM	exercise	Go rock climbing	4	1
+1	10	10AM	personal	Go to dinner with roommates	5	1
+1	19	7PM	academic	Study at Langson	3	1
+1	8	8AM	work	Work at Anteatery	3	0
+1	10	10AM	work	Work at DBH	0	0
+1	21	9PM	meeting	Photography club meeting	4	1
+1	9	9AM	exercise	Work out at ARC	3	1
+1	18	6PM	work	Work at Anteatery	2	1
+1	23	11PM	academic	Study for CS125 Midterm at Pheonix Grill	2	1
+1	22	10PM	work	Work at DBH	6	0
+1	17	5PM	academic	Study for CS178 Midterm at ALP	1	0
+1	19	7PM	personal	Call mom	1	1
+1	19	7PM	personal	Call mom	1	1
+1	10	10AM	exercise	Go for a run	3	1
+1	21	9PM	exercise	Go for a run	2	0
+1	10	10AM	personal	Go to dinner with roommates	3	1
+1	18	6PM	work	Work at Anteatery	1	1
+1	18	6PM	meeting	Photography club meeting	5	0
+1	23	11PM	personal	Call mom	2	1
+1	20	8PM	work	Work at DBH	4	0
+1	21	9PM	meeting	HackUCI club meeting	4	0
+1	8	8AM	academic	Study for CS125 Midterm at Pheonix Grill	2	1
+1	19	7PM	work	Work at DBH	6	1
+1	10	10AM	work	Work at DBH	3	0
+1	22	10PM	personal	Call mom	0	1
+1	23	11PM	exercise	Work out at ARC	6	0
+1	23	11PM	academic	Study for CS125 Midterm at Pheonix Grill	1	1
+1	20	8PM	meeting	HackUCI club meeting	0	1
+1	19	7PM	meeting	HackUCI club meeting	5	0
+1	20	8PM	meeting	HackUCI club meeting	5	0
+1	22	10PM	work	Work at Anteatery	5	0
+1	10	10AM	meeting	Photography club meeting	2	0
+1	22	10PM	academic	Study for CS178 Midterm at ALP	4	0
+1	20	8PM	meeting	Photography club meeting	1	1
+1	21	9PM	academic	Study for CS178 Midterm at ALP	4	1
+1	20	8PM	meeting	HackUCI club meeting	3	1
+1	21	9PM	meeting	HackUCI club meeting	4	0
+1	23	11PM	meeting	HackUCI club meeting	3	0
+1	9	9AM	work	Work at Anteatery	1	1
+1	10	10AM	work	Work at DBH	3	0
+1	8	8AM	academic	Study for CS178 Midterm at ALP	6	0
+1	18	6PM	meeting	HackUCI club meeting	3	1
+1	23	11PM	exercise	Go rock climbing	3	0
+1	17	5PM	meeting	HackUCI club meeting	0	1
+1	20	8PM	personal	Call dad	6	1
+1	10	10AM	work	Work at Anteatery	0	0
+1	9	9AM	academic	Study for CS125 Midterm at Pheonix Grill	3	0
+1	17	5PM	meeting	Photography club meeting	0	1
+1	20	8PM	meeting	HackUCI club meeting	6	0
+1	8	8AM	meeting	HackUCI club meeting	3	0
+1	22	10PM	work	Work at DBH	1	1
+1	22	10PM	academic	Study at Science Library	2	1
+1	20	8PM	academic	Study at Langson	5	0
+1	23	11PM	meeting	Photography club meeting	3	0
+1	19	7PM	exercise	Go for a run	0	0
+1	10	10AM	exercise	Work out at ARC	6	1
+1	21	9PM	meeting	HackUCI club meeting	1	1
+1	19	7PM	work	Work at Anteatery	2	1
+1	21	9PM	personal	Go to dinner with roommates	2	1
+1	23	11PM	exercise	Go for a run	4	0
+1	10	10AM	academic	Study for CS125 Midterm at Pheonix Grill	5	1
+1	22	10PM	work	Work at DBH	4	0
+1	10	10AM	meeting	Photography club meeting	6	0
+1	23	11PM	work	Work at DBH	4	0
+1	23	11PM	exercise	Go rock climbing	0	0
+1	22	10PM	academic	Study at Langson	2	1
+1	19	7PM	personal	Go to dinner with roommates	5	1
+1	17	5PM	academic	Study at Science Library	1	1
+1	21	9PM	academic	Study for CS125 Midterm at Pheonix Grill	2	1
+1	8	8AM	personal	Call mom	6	1
+1	9	9AM	work	Work at DBH	6	0
+1	22	10PM	academic	Study at Science Library	1	1
+1	21	9PM	personal	Call dad	5	1
+1	19	7PM	personal	Call mom	3	1
+1	21	9PM	academic	Study at Science Library	3	1
+1	18	6PM	academic	Study for CS178 Midterm at ALP	1	1
+1	22	10PM	meeting	HackUCI club meeting	4	0
+1	9	9AM	personal	Call mom	3	1
+1	8	8AM	meeting	HackUCI club meeting	4	0
+1	19	7PM	work	Work at Anteatery	1	1
+1	18	6PM	work	Work at Anteatery	3	0
+1	17	5PM	personal	Call dad	3	1
+1	22	10PM	work	Work at Anteatery	2	1
+1	22	10PM	academic	Study at Langson	0	1
+1	22	10PM	work	Work at Anteatery	1	1
+1	19	7PM	meeting	HackUCI club meeting	6	0
+1	18	6PM	academic	Study for CS178 Midterm at ALP	4	1
+1	19	7PM	work	Work at DBH	5	0
+1	23	11PM	academic	Study at Science Library	5	1
+1	17	5PM	meeting	HackUCI club meeting	1	0
+1	22	10PM	work	Work at DBH	1	1
+1	17	5PM	exercise	Go rock climbing	2	0
+1	18	6PM	personal	Call mom	5	1
+1	8	8AM	work	Work at Anteatery	4	0
+1	17	5PM	exercise	Go rock climbing	5	1
+1	17	5PM	exercise	Work out at ARC	6	1
+1	10	10AM	work	Work at DBH	4	0
+1	8	8AM	work	Work at Anteatery	6	0
+1	23	11PM	meeting	Photography club meeting	5	0
+1	18	6PM	personal	Call mom	0	1
+1	17	5PM	academic	Study for CS125 Midterm at Pheonix Grill	4	1
+1	20	8PM	exercise	Go rock climbing	1	1
+1	8	8AM	work	Work at Anteatery	0	0
+1	17	5PM	exercise	Go rock climbing	5	1
+1	9	9AM	work	Work at DBH	2	1
+1	18	6PM	exercise	Go for a run	4	0
+1	17	5PM	meeting	Photography club meeting	2	0
+1	10	10AM	academic	Study for CS125 Midterm at Pheonix Grill	0	1
+1	10	10AM	exercise	Go for a run	2	0
+1	10	10AM	academic	Study at Langson	3	0
+1	20	8PM	meeting	Photography club meeting	6	0
+1	19	7PM	personal	Call mom	0	1
+1	20	8PM	work	Work at Anteatery	4	0
+1	19	7PM	academic	Study at Langson	2	1
+1	21	9PM	work	Work at Anteatery	1	1
+1	18	6PM	meeting	HackUCI club meeting	5	0
+1	19	7PM	meeting	Photography club meeting	5	0
+1	19	7PM	exercise	Work out at ARC	0	0
+1	8	8AM	personal	Go to dinner with roommates	0	1
+1	20	8PM	academic	Study at Langson	4	1
+1	8	8AM	exercise	Go for a run	3	1
+1	9	9AM	exercise	Work out at ARC	3	1
+1	18	6PM	personal	Go to dinner with roommates	4	1
+1	17	5PM	meeting	Photography club meeting	6	0
+1	18	6PM	meeting	Photography club meeting	3	0
+1	18	6PM	exercise	Go for a run	2	0
+1	8	8AM	personal	Call mom	3	1
+1	8	8AM	work	Work at DBH	5	0
+1	21	9PM	academic	Study at Langson	5	1
+1	23	11PM	personal	Go to dinner with roommates	1	1
+1	8	8AM	meeting	Photography club meeting	4	0
+1	17	5PM	exercise	Work out at ARC	3	0
+1	19	7PM	personal	Call mom	3	1
+1	21	9PM	academic	Study for CS178 Midterm at ALP	2	1
+1	9	9AM	personal	Call mom	0	1
+1	20	8PM	work	Work at DBH	1	1
+1	10	10AM	personal	Call mom	3	1
+1	9	9AM	meeting	Photography club meeting	3	0
+1	21	9PM	work	Work at Anteatery	5	0
+1	20	8PM	meeting	HackUCI club meeting	3	1
+1	8	8AM	exercise	Go rock climbing	4	0
+1	18	6PM	academic	Study at Langson	5	1
+1	8	8AM	work	Work at Anteatery	5	0
+1	22	10PM	exercise	Go for a run	3	1
+1	19	7PM	academic	Study for CS125 Midterm at Pheonix Grill	0	1
+1	18	6PM	exercise	Go for a run	0	0
+1	22	10PM	academic	Study at Langson	2	1
+1	22	10PM	exercise	Go for a run	4	0
+1	19	7PM	exercise	Work out at ARC	3	0
+1	20	8PM	academic	Study at Langson	0	1
+1	22	10PM	meeting	Photography club meeting	6	0
+1	9	9AM	exercise	Go for a run	3	1

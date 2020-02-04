@@ -4,21 +4,21 @@
 
 import collections
 import random
-random.seed(0)
+from datetime import datetime
+
+# random.seed(0)
 
 TASK_TYPES = [
     "academic",
     "personal",
     "work",
     "exercise",
-    "meeting",
-    "flex"
+    "meeting"
 ]
 
 TASK_LENGTHS = [
     1,
-    2,
-    3
+    2
 ]
 
 HOURS_IN_DAY = 24
@@ -58,13 +58,18 @@ TASK_DESCRIPTIONS = {
     TASK_TYPES[4]: [
         "HackUCI club meeting",
         "Photography club meeting",
-    ],
-    TASK_TYPES[5]: [
-        "flex"
     ]
 }
 
-
+DAYS_OF_WEEK = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]
 class _GetchUnix:
     def __init__(self):
         import tty
@@ -122,7 +127,7 @@ def generate_random_task():
     task_data = []
 
     # Pick random length
-    task_length = random.randrange(1, 4)
+    task_length = random.randrange(1, 2)
     task_data.append(task_length)
 
     # Select random time
@@ -136,8 +141,12 @@ def generate_random_task():
     task_type = get_random_value(TASK_TYPES)
     task_data.append(task_type)
 
+    # Add Description
     task_description = get_random_value(TASK_DESCRIPTIONS[task_type])
     task_data.append(task_description)
+
+    # Add Day of week
+    task_data.append(random.randint(0, 6))
 
     return task_data
 
@@ -146,7 +155,7 @@ def get_answer():
     returnChar = ''
     while (True):
         returnChar = get().lower()
-        if (returnChar != 'y' or returnChar != 'n'):
+        if (returnChar != 'y' and returnChar != 'n'):
             if (returnChar == 'q'):
                 break
             else:
@@ -157,8 +166,25 @@ def get_answer():
 
 
 def run_data_script():
-    for i in range(500):
-        print(generate_random_task())
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    count = 1
+    with open(current_time + ".txt", "w+") as ofile:
+        while True:
+            task = generate_random_task()
+            # print(str(task[3]) + " for " + str(task[0])+ " hours at " + str(task[2]) + " on " + DAYS_OF_WEEK[task[5]])
+            print(str(task[3]) + " at " + str(task[2]) + " on " + DAYS_OF_WEEK[task[5]])
+            count += 1
+
+            decision = get_answer()
+
+            if decision == -1:
+                break
+            else:
+                task.append(decision)
+                ofile.write("\t".join([str(x) for x in task]) + "\n")
+    print("Completed data collection script")
+
 
 
 if __name__ == "__main__":

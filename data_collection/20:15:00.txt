@@ -1,0 +1,2 @@
+1	22	10PM	meeting	Photography club meeting	1	0
+1	10	10AM	academic	Study for CS178 Midterm at ALP	1	1

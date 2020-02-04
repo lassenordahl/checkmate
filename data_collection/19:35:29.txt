@@ -1,0 +1,5 @@
+2	17	5PM	academic	Study for CS178 Midterm at ALP	2	0
+1	20	8PM	meeting	Photography club meeting	3	0
+2	20	8PM	meeting	Photography club meeting	3	0
+1	19	7PM	meeting	Photography club meeting	6	0
+2	17	5PM	meeting	Photography club meeting	2	0

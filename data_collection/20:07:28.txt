@@ -1,0 +1,12 @@
+1	8	8AM	exercise	Go rock climbing	4	0
+1	18	6PM	academic	Study at Langson	5	1
+1	8	8AM	work	Work at Anteatery	5	0
+1	22	10PM	exercise	Go for a run	3	1
+1	19	7PM	academic	Study for CS125 Midterm at Pheonix Grill	0	1
+1	18	6PM	exercise	Go for a run	0	0
+1	22	10PM	academic	Study at Langson	2	1
+1	22	10PM	exercise	Go for a run	4	0
+1	19	7PM	exercise	Work out at ARC	3	0
+1	20	8PM	academic	Study at Langson	0	1
+1	22	10PM	meeting	Photography club meeting	6	0
+1	9	9AM	exercise	Go for a run	3	1
