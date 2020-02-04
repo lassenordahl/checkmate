@@ -42,12 +42,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //String tempUri = "Google Login";
 
+  var verifier;
+
 
   _launchURL() async {
-    const url = 'https://learningcalendar-development.auth0.com'
+    verifier = _generateCodeVerifier();
+    var codeChallenge = _generateCodeChallenge(verifier);
+    print("Code Verifier:" + verifier);
+
+    var url = 'https://learningcalendar-development.auth0.com'
     +'/authorize?response_type=code'
     + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
+    + '&audience=https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development'
+    + '&scope=offline_access openid profile'
+    + '&access_type=offline'
     + '&connection=google-oauth2'
+    + '&code_challenge_method=S256'
+    + '&code_challenge=' + codeChallenge
     + '&redirect_uri=deeplink://testing';
     if (await canLaunch(url)) {
       await launch(url);
