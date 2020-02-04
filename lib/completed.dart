@@ -113,7 +113,7 @@ class CompletedListState extends State<CompletedList> {
                                         icon: Icon(Icons.clear),
                                         color: Colors.red,
                                         onPressed: () {
-                                          print("hey there");
+                                          print("hey bear");
                                         })),
                               ),
                             ),

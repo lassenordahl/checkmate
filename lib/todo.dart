@@ -25,9 +25,7 @@ class TodoListState extends State<TodoList> {
   // Build the whole list of todo items
   Widget _buildTodoList() {
     return new Column(
-      children: <Widget>[
-        for (var item in _todoItems) _buildTodoItem(item)
-      ],
+      children: <Widget>[for (var item in _todoItems) _buildTodoItem(item)],
     );
   }
 
@@ -80,9 +78,7 @@ class TodoListState extends State<TodoList> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      
-                    ],
+                    children: <Widget>[],
                   )
                 ])),
       ),
