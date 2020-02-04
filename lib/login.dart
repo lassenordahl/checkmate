@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String _link;
-  //StreamSubscription _sub;
+  StreamSubscription _sub;
 
   @override
   void initState() {
@@ -113,6 +113,16 @@ class _MyHomePageState extends State<MyHomePage> {
       // Handle exception by warning the user their action did not succeed
       // return?
     }
+
+    // Attach a listener to the stream
+    _sub = getUriLinksStream().listen((Uri uri) {
+      // Use the uri and warn the user, if it is not correct
+      setState(() {
+        _link = uri.toString();
+      });
+    }, onError: (err) {
+      // Handle exception by warning the user their action did not succeed
+    });
 
   }
 
