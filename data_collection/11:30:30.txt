@@ -1,0 +1,5 @@
+1	20	8PM	meeting	Photography club meeting	6	0
+1	19	7PM	personal	Call dad	1	1
+1	21	9PM	work	Work at Anteatery	0	0
+1	9	9AM	exercise	Go rock climbing	2	0
+1	10	10AM	exercise	Go rock climbing	5	1
