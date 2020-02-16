@@ -1,0 +1,2 @@
+1	17	5PM	personal	Call dad	0	0
+1	19	7PM	academic	Study at Science Library	4	1

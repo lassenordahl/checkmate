@@ -70,6 +70,8 @@ DAYS_OF_WEEK = [
     "Saturday",
     "Sunday"
 ]
+
+
 class _GetchUnix:
     def __init__(self):
         import tty
@@ -150,6 +152,7 @@ def generate_random_task():
 
     return task_data
 
+
 def get_answer():
     get = _GetchUnix()
     returnChar = ''
@@ -164,19 +167,21 @@ def get_answer():
             return 1 if returnChar == 'y' else 0
     return -1
 
+   
 
 def run_data_script():
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    count = 1
+    now=datetime.now()
+    current_time=now.strftime("%H:%M:%S")
+    count=1
     with open(current_time + ".txt", "w+") as ofile:
         while True:
-            task = generate_random_task()
+            task=generate_random_task()
             # print(str(task[3]) + " for " + str(task[0])+ " hours at " + str(task[2]) + " on " + DAYS_OF_WEEK[task[5]])
-            print(str(task[3]) + " at " + str(task[2]) + " on " + DAYS_OF_WEEK[task[5]])
+            print(str(task[3]) + " at " + str(task[2]) + \
+                  " on " + DAYS_OF_WEEK[task[5]])
             count += 1
 
-            decision = get_answer()
+            decision=get_answer()
 
             if decision == -1:
                 break
