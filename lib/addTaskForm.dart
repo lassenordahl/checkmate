@@ -23,33 +23,37 @@ class AddTaskFormState extends State<AddTaskForm> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Container(
-        width: 100,
-        child: Form(
-            key: _formKey,
-            child: Column(children: <Widget>[
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                decoration: new InputDecoration(
-                  labelText: 'Task title',
-                  focusColor: Color(0xfff88379),
-                  // focusedBorder: OutlineInputBorder(
-                  //     borderSide:
-                  //         BorderSide(color: Color(0xfff88379), width: 1.0)),
-                  //   enabledBorder: OutlineInputBorder(
-                  //     // width: 0.0 produces a thin "hairline" border
-                  //     borderSide:
-                  //         const BorderSide(color: Color(0xfff88379), width: 0.0),
-                  //   ),
-                ),
+      width: 100,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              // The validator receives the text that the user has entered.
+              decoration: new InputDecoration(
+                labelText: 'Task title',
+                focusColor: Color(0xfff88379),
+                // focusedBorder: OutlineInputBorder(
+                //     borderSide:
+                //         BorderSide(color: Color(0xfff88379), width: 1.0)),
+                //   enabledBorder: OutlineInputBorder(
+                //     // width: 0.0 produces a thin "hairline" border
+                //     borderSide:
+                //         const BorderSide(color: Color(0xfff88379), width: 0.0),
+                //   ),
+              ),
 
-                style: new TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              )
-            ])));
+              style: new TextStyle(color: Colors.white),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

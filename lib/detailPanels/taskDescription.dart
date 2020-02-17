@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../forms/taskDescriptionForm.dart';
+import '../objects/Task.dart';
+
 class TaskDescription extends StatefulWidget {
+  final Task selectedTask;
+
+  TaskDescription({Key key, this.selectedTask});
+
   @override
   createState() => new TaskDescriptionState();
 }
 
 class TaskDescriptionState extends State<TaskDescription> {
-  // final Todo todo;
-
-  // // In the constructor, require a Todo.
-  // DetailScreen({Key key, @required this.todo}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Hero(
-        tag: 'TaskHero123',
-        child: Container(
+    return new Hero(
+      tag: widget.selectedTask.id.toString(),
+      child: Scaffold(
+        body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topRight,
@@ -30,7 +32,7 @@ class TaskDescriptionState extends State<TaskDescription> {
                   top: 64.0,
                   left: 32.0,
                   right: 32.0,
-                  bottom: 32.0,
+                  bottom: 24.0,
                 ),
                 child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,6 +70,16 @@ class TaskDescriptionState extends State<TaskDescription> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                  left: 32.0,
+                  right: 32.0,
+                  bottom: 32.0,
+                ),
+                child: new TaskDescriptionForm(
+                  selectedTask: widget.selectedTask,
                 ),
               ),
             ],
