@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  google_sign_in: ^4.1.1
   sliding_up_panel: ^0.3.6
   intl: ^0.15.7
   flutter:
