@@ -6,36 +6,26 @@ import '../pageRouteBuilders/openCardRoute.dart';
 
 import '../objects/Task.dart';
 
-class TodoList extends StatefulWidget {
+class ScheduledTasks extends StatefulWidget {
   @override
-  createState() => new TodoListState();
+  createState() => new ScheduledTasksState();
 }
 
-class TodoListState extends State<TodoList> {
-  List<String> _todoItems = [
-    '123',
-    '123445',
+class ScheduledTasksState extends State<ScheduledTasks> {
+  List<Task> _scheduledTasks = [
+    new Task(123, "Work Out", "Go work out lazy pants", "exercise", -1, new DateTime(1), new DateTime(2), 123, 123),
+    new Task(124, "Study", "Study at langson", "academic", -1, new DateTime(1), new DateTime(2), 123, 123)
   ];
-
-  // This will be called each time the + button is pressed
-  void _addTodoItem() {
-    // Putting our code inside "setState" tells the app that our state has changed, and
-    // it will automatically re-render the list
-    setState(() {
-      int index = _todoItems.length;
-      // _todoItems.add('Item ' + index.toString());
-    });
-  }
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
     return new Column(
-      children: <Widget>[for (var item in _todoItems) _buildTodoItem(item)],
+      children: <Widget>[for (var item in _scheduledTasks) _buildScheduledTask(item)],
     );
   }
 
   // Build a single todo item
-  Widget _buildTodoItem(String todoText) {
+  Widget _buildScheduledTask(Task task) {
     return new Container(
       padding: EdgeInsets.only(bottom: 32.0, left: 32.0, right: 32.0),
       child: GestureDetector(
@@ -44,7 +34,7 @@ class TodoListState extends State<TodoList> {
           Navigator.push(context, OpenCardRoute(page: TaskDescription()));
         },
         child: Hero(
-          tag: 'TaskHero' + todoText,
+          tag: 'TaskHero' + task.id.toString(),
           child: Container(
             height: 100,
             width: double.infinity,
@@ -70,7 +60,7 @@ class TodoListState extends State<TodoList> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Work Out",
+                            task.name,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -79,7 +69,7 @@ class TodoListState extends State<TodoList> {
                           Padding(
                             padding: EdgeInsets.only(top: 8.0),
                             child: Text(
-                              "Time would go here",
+                              task.description,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,

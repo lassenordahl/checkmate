@@ -2,21 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class AddTaskForm extends StatefulWidget {
+import '../objects/Task.dart';
+
+class TaskDescriptionForm extends StatefulWidget {
+
+  final Task selectedTask;
+
+  TaskDescriptionForm({Key key, this.selectedTask});
+
   @override
-  AddTaskFormState createState() {
-    return AddTaskFormState();
-  }
+  createState() => TaskDescriptionFormState();
 }
 
 // Define a corresponding State class.
 // This class holds data related to the form.
-class AddTaskFormState extends State<AddTaskForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a `GlobalKey<FormState>`,
-  // not a GlobalKey<MyCustomFormState>.
+class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -31,18 +31,9 @@ class AddTaskFormState extends State<AddTaskForm> {
             TextFormField(
               // The validator receives the text that the user has entered.
               decoration: new InputDecoration(
-                labelText: 'Task title',
+                labelText: 'Task Name',
                 focusColor: Color(0xfff88379),
-                // focusedBorder: OutlineInputBorder(
-                //     borderSide:
-                //         BorderSide(color: Color(0xfff88379), width: 1.0)),
-                //   enabledBorder: OutlineInputBorder(
-                //     // width: 0.0 produces a thin "hairline" border
-                //     borderSide:
-                //         const BorderSide(color: Color(0xfff88379), width: 0.0),
-                //   ),
               ),
-
               style: new TextStyle(color: Colors.white),
               validator: (value) {
                 if (value.isEmpty) {
