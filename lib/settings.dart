@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'addTaskForm.dart';
-
-class AddTask extends StatelessWidget {
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -28,14 +26,13 @@ class AddTask extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Add Task",
+                              "Settings",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 28,
                                   fontWeight: FontWeight.w800),
                             ),
                           ),
-                          new AddTaskForm()
                         ])
                   ]))
             ])));

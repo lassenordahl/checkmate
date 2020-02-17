@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 // import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'todo.dart';
-import 'completed.dart';
+import 'taskLists/scheduledTasks.dart';
+import 'taskLists/limboTasks.dart';
 import 'addTask.dart';
-import 'login.dart';
+import 'settings.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,6 @@ void main() {
 }
 
 class TodoApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(title: 'CS125 Project', home: new App());
@@ -40,26 +40,71 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         floatingActionButton: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              // Call setState. This tells Flutter to rebuild the
-              // UI with the changes.
-              print("we're adding another one");
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddTask()));
-            },
-            tooltip: 'Add Task',
-            child: Icon(Icons.add),
-            backgroundColor: Color(0xfff88379),
-          ),
-        ),
+            padding: EdgeInsets.all(0.0),
+            child: SpeedDial(
+                overlayColor: Colors.white,
+                overlayOpacity: 0.6,
+                tooltip: 'Add Task',
+                child: Icon(Icons.menu),
+                backgroundColor: Colors.grey[800],
+                // backgroundColor: Color(0xfff88379),
+                children: [
+                  SpeedDialChild(
+                    child: Icon(Icons.settings),
+                    backgroundColor: Colors.grey[800],
+                    label: "Settings",
+                    onTap: () {
+                      // Call setState. This tells Flutter to rebuild the
+                      // UI with the changes.
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
+                    },
+                  ),
+                  SpeedDialChild(
+                    child: Icon(Icons.search),
+                    backgroundColor: Colors.grey[800],
+                    label: "Search Tasks",
+                    onTap: () {
+                      // Call setState. This tells Flutter to rebuild the
+                      // UI with the changes.
+                      print("we're adding another one");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => AddTask()));
+                    },
+                  ),
+                  SpeedDialChild(
+                    backgroundColor: Colors.grey[800],
+                    child: Icon(Icons.add),
+                    label: "Create Task",
+                    onTap: () {
+                      // Call setState. This tells Flutter to rebuild the
+                      // UI with the changes.
+                      print("we're adding another one");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => AddTask()));
+                    },
+                  ),
+                ])
+            // child: FloatingActionButton(
+            //   onPressed: () {
+            //     // Call setState. This tells Flutter to rebuild the
+            //     // UI with the changes.
+            //     print("we're adding another one");
+            //     Navigator.push(
+            //         context, MaterialPageRoute(builder: (context) => AddTask()));
+            //   },
+            //   tooltip: 'Add Task',
+            //   child: Icon(Icons.add),
+            //   backgroundColor: Color(0xfff88379),
+            // ),
+            ),
         body: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.deepPurple, Colors.deepPurple[700]])),
+                    colors: [Colors.cyan[400], Colors.blue[500]])),
+            // colors: [Colors.deepPurple, Colors.deepPurple[700]])),
             child: RefreshIndicator(
                 onRefresh: () {
                   Future<int> now = new Future(_test);
@@ -123,7 +168,7 @@ class App extends StatelessWidget {
                             child: new Row(
                               children: <Widget>[
                                 Text(
-                                  "Past Tasks",
+                                  "Limbo Tasks",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -132,7 +177,7 @@ class App extends StatelessWidget {
                               ],
                             ),
                           ),
-                          new CompletedList(),
+                          new LimboTasks(),
                           new Container(
                             padding: EdgeInsets.only(
                               left: 32.0,
@@ -142,7 +187,7 @@ class App extends StatelessWidget {
                             child: new Row(
                               children: <Widget>[
                                 Text(
-                                  "Future Tasks",
+                                  "Scheduled Tasks",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -152,6 +197,25 @@ class App extends StatelessWidget {
                             ),
                           ),
                           new TodoList(),
+                          new Container(
+                            padding: EdgeInsets.only(
+                              left: 32.0,
+                              right: 32.0,
+                              bottom: 32.0,
+                            ),
+                            child: new Row(
+                              children: <Widget>[
+                                Text(
+                                  "Unscheduled Tasks",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // new TodoList(),
                         ]))))));
   }
 }
