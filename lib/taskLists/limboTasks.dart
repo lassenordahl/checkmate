@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class CompletedList extends StatefulWidget {
+class LimboTasks extends StatefulWidget {
   @override
-  createState() => new CompletedListState();
+  createState() => new LimboTasksState();
 }
 
-class CompletedListState extends State<CompletedList> {
+class LimboTasksState extends State<LimboTasks> {
   List<String> _completed = [
     'Hello',
     'Hello',
