@@ -8,6 +8,10 @@ import '../components/taskTypeTag.dart';
 import '../objects/Task.dart';
 
 class ScheduledTasks extends StatefulWidget {
+  final String filter;
+
+  ScheduledTasks({Key key, @required this.filter}) : super(key: key);
+
   @override
   createState() => new ScheduledTasksState();
 }
@@ -22,9 +26,11 @@ class ScheduledTasksState extends State<ScheduledTasks> {
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
+    List<Task> _filteredTasks = _scheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+
     return new Column(
       children: <Widget>[
-        for (var item in _scheduledTasks) _buildScheduledTask(item)
+        for (var item in _filteredTasks) _buildScheduledTask(item)
       ],
     );
   }
