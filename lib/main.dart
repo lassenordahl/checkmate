@@ -14,17 +14,29 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(new TodoApp());
-}
-
-class TodoApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(title: 'CS125 Project', home: new App());
-  }
+  runApp(new App());
 }
 
 class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Checkmate',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  HomePage({Key key});
+
+  @override
+  createState() => new HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  String _filter = "";
+
   _getDateString() {
     var now = new DateTime.now();
     var formatter = new DateFormat('MMM dd, yyyy');
@@ -35,6 +47,15 @@ class App extends StatelessWidget {
   _test() {
     return 1;
   }
+
+  _changeFilter(value) {
+    setState(() {
+      _filter = value;
+    });
+    print(_filter);
+  }
+
+  GlobalKey<ScheduledTasksState> _scheduledTasksKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -58,18 +79,6 @@ class App extends StatelessWidget {
                     // UI with the changes.
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Settings()));
-                  },
-                ),
-                SpeedDialChild(
-                  child: Icon(Icons.search),
-                  backgroundColor: Colors.grey[800],
-                  label: "Search Tasks",
-                  onTap: () {
-                    // Call setState. This tells Flutter to rebuild the
-                    // UI with the changes.
-                    print("we're adding another one");
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddTask()));
                   },
                 ),
                 SpeedDialChild(
@@ -100,124 +109,137 @@ class App extends StatelessWidget {
           ),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Colors.cyan[400], Colors.blue[500]])),
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.cyan[400], Colors.blue[500]],
+          ),
+        ),
         // colors: [Colors.deepPurple, Colors.deepPurple[700]])),
-        child: RefreshIndicator(
-          onRefresh: () {
-            Future<int> now = new Future(_test);
-            return now;
-          },
-          child: SingleChildScrollView(
-            child: Container(
-              height: double.maxFinite,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Colors.blue, Colors.purple])),
-              child: Column(
-                children: <Widget>[
-                  new Container(
-                    padding: EdgeInsets.only(
-                      top: 64.0,
-                      left: 32.0,
-                      right: 32.0,
-                      bottom: 32.0,
-                    ),
-                    child: new Row(
-                      children: <Widget>[
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Schedule",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w800),
-                                ),
+        // child: RefreshIndicator(
+        //   onRefresh: () {
+        //     Future<int> now = new Future(_test());
+        //     return now;
+        //   },
+        child: SingleChildScrollView(
+          child: Container(
+            height: double.maxFinite,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.blue, Colors.purple])),
+            child: Column(
+              children: <Widget>[
+                new Container(
+                  padding: EdgeInsets.only(
+                    top: 64.0,
+                    left: 32.0,
+                    right: 32.0,
+                    bottom: 6.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Schedule",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            _getDateString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child: TextField(
+                            style: new TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.white,
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 8.0),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    _getDateString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              )
-                            ]),
-                        // Column(
-                        //   children: <Widget>[Text("hello")],
-                        // )
-                      ],
-                    ),
-                  ),
-                  new Container(
-                    padding:
-                        EdgeInsets.only(left: 32.0, right: 32.0, bottom: 32.0),
-                    child: new Row(
-                      children: <Widget>[
-                        Text(
-                          "Limbo Tasks",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800),
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (value) {
+                              _changeFilter(value);
+                            },
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  new LimboTasks(),
-                  new Container(
-                    padding: EdgeInsets.only(
-                      left: 32.0,
-                      right: 32.0,
-                      bottom: 32.0,
-                    ),
-                    child: new Row(
-                      children: <Widget>[
-                        Text(
-                          "Scheduled Tasks",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800),
-                        ),
-                      ],
-                    ),
+                ),
+                new Container(
+                  padding:
+                      EdgeInsets.only(left: 32.0, right: 32.0, bottom: 32.0),
+                  child: new Row(
+                    children: <Widget>[
+                      Text(
+                        "Limbo Tasks",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ],
                   ),
-                  new ScheduledTasks(),
-                  new Container(
-                    padding: EdgeInsets.only(
-                      left: 32.0,
-                      right: 32.0,
-                      bottom: 32.0,
-                    ),
-                    child: new Row(
-                      children: <Widget>[
-                        Text(
-                          "Unscheduled Tasks",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800),
-                        ),
-                      ],
-                    ),
+                ),
+                new LimboTasks(filter: _filter),
+                new Container(
+                  padding: EdgeInsets.only(
+                    left: 32.0,
+                    right: 32.0,
+                    bottom: 32.0,
                   ),
-                  // new TodoList(),
-                ],
-              ),
+                  child: new Row(
+                    children: <Widget>[
+                      Text(
+                        "Scheduled Tasks",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ),
+                ),
+                new ScheduledTasks(key: _scheduledTasksKey, filter: _filter),
+                new Container(
+                  padding: EdgeInsets.only(
+                    left: 32.0,
+                    right: 32.0,
+                    bottom: 32.0,
+                  ),
+                  child: new Row(
+                    children: <Widget>[
+                      Text(
+                        "Unscheduled Tasks",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

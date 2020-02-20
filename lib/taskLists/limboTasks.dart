@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../objects/Task.dart';
+
 class LimboTasks extends StatefulWidget {
+  final String filter;
+
+  LimboTasks({Key key, this.filter}) : super(key: key);
+
   @override
   createState() => new LimboTasksState();
 }
 
 class LimboTasksState extends State<LimboTasks> {
-  List<String> _completed = [
-    'Hello',
-    'Hello',
+  List<Task> _completedTasks = [
+    new Task(123, "Work Out", "Go work out lazy pants", "exercise", -1,
+        new DateTime.now(), new DateTime.now(), 123, 123),
+    new Task(124, "Study", "Study at langson", "academic", -1,
+        new DateTime.now(), new DateTime.now(), 123, 123)
   ];
 
-  // This will be called each time the + button is pressed
-  void _addCompletedItem() {
-    // Putting our code inside "setState" tells the app that our state has changed, and
-    // it will automatically re-render the list
-    setState(() {
-      int index = _completed.length;
-      // _todoItems.add('Item ' + index.toString());
-    });
-  }
 
   // Build the whole list of todo items
   Widget _buildCompletedList() {
+
+    List<Task> _filteredTasks = _completedTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+
     return new Column(
       children: <Widget>[
-        for (var item in _completed) _buildCompletedItem(item)
+        for (var item in _filteredTasks) _buildCompletedItem(item)
       ],
     );
   }
 
   // Build a single todo itemƒƒ
-  Widget _buildCompletedItem(String todoText) {
+  Widget _buildCompletedItem(Task task) {
     return new Container(
       padding: EdgeInsets.only(bottom: 32.0, left: 32.0, right: 32.0),
       child: Container(
