@@ -9,12 +9,13 @@ import 'taskLists/scheduledTasks.dart';
 import 'taskLists/limboTasks.dart';
 import 'addTask.dart';
 import 'settings.dart';
+import 'login.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(new App());
+  runApp(new Login());
 }
 
 class App extends StatelessWidget {

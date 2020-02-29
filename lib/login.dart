@@ -12,6 +12,8 @@ import 'package:flutter/services.dart' show PlatformException, SystemNavigator;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
+
 void main() => runApp(Login());
 
 class Login extends StatelessWidget {
@@ -20,11 +22,11 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Checkmate',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Checkmate'),
     );
   }
 }
@@ -40,10 +42,17 @@ class MyHomePage extends StatefulWidget {
 
 
 
-
 class _MyHomePageState extends State<MyHomePage> {
 
   //String tempUri = "Google Login";
+
+
+  void _changeRoutes(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => App()),
+    );
+  }
 
   var verifier;
 
@@ -63,12 +72,14 @@ class _MyHomePageState extends State<MyHomePage> {
     +'/authorize?response_type=code'
     + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
     + '&audience=https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development'
-    + '&scope=offline_access openid profile'
+    + '&scope=offline_access+openid+profile'
     + '&access_type=offline'
     + '&connection=google-oauth2'
     + '&code_challenge_method=S256'
     + '&code_challenge=' + codeChallenge
     + '&redirect_uri=deeplink://testing';
+
+    print("Opening:" + url);
     if (await canLaunch(url)) {
       await launch(url);
       SystemNavigator.pop();
@@ -102,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String _link;
   String _authCode;
   String _authToken;
-  String _authTokenResponse;
   StreamSubscription _sub;
 
   @override
@@ -127,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _authCode = code;
         print(code); // E4t8E7TIwhIK97wr
         _exchangeAuthForToken();
+        _changeRoutes();
       }
       
     } on PlatformException {
@@ -145,6 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
         String code = _link.split("=")[1];
         _authCode = code;
         _exchangeAuthForToken();
+        _changeRoutes();
       }
     }, onError: (err) {
       // Handle exception by warning the user their action did not succeed
@@ -160,11 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // Try reading data from the counter key. If it doesn't exist, return 0.
     var verifierDisk = prefs.getString('verifier');
 
-    print('verfier:');
-    print(verifierDisk);
-    print('##################');
-    var codeChallenge = _generateCodeChallenge(verifierDisk);
-
     /*
       * @apiParam {String} type Whether the token is for "login" or "refresh".
       * @apiParam {String} client_id Client ID for the user pool.
@@ -176,11 +183,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // set up POST request arguments
     String url = 'https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/auth/tokens';
-    /*+'?type=login'
-    + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
-    + '&code=' + _authCode
-    + '&code_challenge=' + codeChallenge
-    + '&redirect_uri=deeplink://testing';*/
 
     print(url);
 
@@ -189,29 +191,32 @@ class _MyHomePageState extends State<MyHomePage> {
     jsonBody["type"] = "login";
     jsonBody["client_id"] = "NHoUARv7KKdO2VcCud3OWzpvZ52b16m8";
     jsonBody["code"] = _authCode;
-    jsonBody["code_challenge"] = codeChallenge;
+    jsonBody["code_verifier"] = verifierDisk;
     jsonBody["redirect_uri"] = "deeplink://testing";
     String bodyJson = json.encode(jsonBody);
-    /*Map<String, String> json = {"type": "login", "client_id": "NHoUARv7KKdO2VcCud3OWzpvZ52b16m8",
-    "code": _authCode, "code_challenge": codeChallenge, "redirect_uri":"deeplink://testing"
-    };*/
-    /*String json = '{"type": "login", "client_id": "NHoUARv7KKdO2VcCud3OWzpvZ52b16m8", "code": "' 
-    + _authCode + '", "code_challenge": "'+ codeChallenge + '", "redirect_uri": "deeplink://testing"}';*/
 
     // make POST request
     Response response = await post(url, headers: headers, body: bodyJson);
-
-    // check the status code for the result
-    //int statusCode = response.statusCode;
     
     // this API passes back the id of the new item added to the body
-    String body = response.body;
-    print(body);
-    //_authTokenResponse = body;
-    //var parsedJson = json.decode(response.body);
-    //_authToken = parsedJson['data']['access_token'];
+    if (response.statusCode == 200) {
+      String body = response.body;
+      var bodyJSON = json.decode(body);
+      var accessToken = bodyJSON['data']['access_token'];
+      var refreshToken = bodyJSON['data']['access_token'];
+      print(body);
+      print("Token:" + bodyJSON['data']['access_token']);
+      print("Refresh token:" + bodyJSON['data']['refresh_token']);
 
-    //Get Authtoken from repsponse
+      // set value
+      prefs.setString('access_token', accessToken);
+      prefs.setString('refresh_token', refreshToken);
+    }
+    else {
+      print("Error");
+      // Handle the authentication error.
+//      _errorDetected = "Error authenticating...";
+    }
     
   }
 
@@ -219,20 +224,37 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+          title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                  Image.asset(
+                 'assets/images/checkmate_logo.png',
+                  fit: BoxFit.contain,
+                  height: 32,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8.0), child: Text('Checkmate'))
+            ],
+          )
       ),
       body: Center(
         child: Column(
           children: <Widget>[
+            Image.asset('assets/images/checkmate_logo.png'),
             Center(
               child: RaisedButton(
+              color: Colors.green,
               onPressed: _launchURL,
-              child: Text("Google Login"),
+              child: Text("Google Login", 
+                style:TextStyle(
+                  color: Colors.white,
+                ),),
               ),
             ),
             Text(_link ?? ""),
             Text(_authCode ?? ""),
             Text(_authToken ?? ""),
+//            Text(_errorDetected ?? "")
           ]
         ),
       ),
