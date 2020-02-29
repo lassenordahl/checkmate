@@ -12,7 +12,7 @@ import 'package:flutter/services.dart' show PlatformException, SystemNavigator;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(Login());
+// void main() => runApp(Login());
 
 class Login extends StatelessWidget {
   // This widget is the root of your application.
@@ -38,15 +38,10 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-
-
-
 class _MyHomePageState extends State<MyHomePage> {
-
   //String tempUri = "Google Login";
 
   var verifier;
-
 
   _launchURL() async {
     verifier = _generateCodeVerifier();
@@ -59,19 +54,36 @@ class _MyHomePageState extends State<MyHomePage> {
     var codeChallenge = _generateCodeChallenge(verifier);
     print("Code Verifier:" + verifier);
 
-    var url = 'https://learningcalendar-development.auth0.com'
-    +'/authorize?response_type=code'
-    + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
-    + '&audience=https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development'
-    + '&scope=offline_access openid profile'
-    + '&access_type=offline'
-    + '&connection=google-oauth2'
-    + '&code_challenge_method=S256'
-    + '&code_challenge=' + codeChallenge
-    + '&redirect_uri=deeplink://testing';
+    var url = 'https://learningcalendar-development.auth0.com' +
+        '/authorize?response_type=code' +
+        '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8' +
+        '&audience=https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development' +
+        // '&scope=offline_access openid profile' +
+        '&scope=profile' +
+        '&access_type=offline' +
+        '&connection=google-oauth2' +
+        '&code_challenge_method=S256' +
+        '&code_challenge=' +
+        codeChallenge +
+        '&redirect_uri=ucicm://uci.checkmate.deeplink';
+    print(url);
+
+    try {
+      String initialLink = await getInitialLink();
+      // Parse the link and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+      print('initial link');
+      print(initialLink);
+    } on PlatformException {
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
+
     if (await canLaunch(url)) {
+      print('was able to launch');
       await launch(url);
-      SystemNavigator.pop();
+      print("url hello");
+      // SystemNavigator.pop();
     } else {
       throw 'Could not launch $url';
     }
@@ -82,7 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     var regexBackslash = new RegExp(r'/');
     var regexEqual = new RegExp(r'=');
 
-    return base64Url.encode(str)
+    return base64Url
+        .encode(str)
         .replaceAll(regexPlus, '-')
         .replaceAll(regexBackslash, '_')
         .replaceAll(regexEqual, '');
@@ -121,14 +134,12 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _link = initialLink;
       });
-      if(_link != null)
-      {
+      if (_link != null) {
         String code = _link.split("=")[1];
         _authCode = code;
         print(code); // E4t8E7TIwhIK97wr
         _exchangeAuthForToken();
       }
-      
     } on PlatformException {
       // Handle exception by warning the user their action did not succeed
       // return?
@@ -140,8 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _link = uri.toString();
       });
-      if(_link != null)
-      {
+      if (_link != null) {
         String code = _link.split("=")[1];
         _authCode = code;
         _exchangeAuthForToken();
@@ -149,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }, onError: (err) {
       // Handle exception by warning the user their action did not succeed
     });
-
   }
 
   //Trade Auth code for token
@@ -175,7 +184,8 @@ class _MyHomePageState extends State<MyHomePage> {
     */
 
     // set up POST request arguments
-    String url = 'https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/auth/tokens';
+    String url =
+        'https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/auth/tokens';
     /*+'?type=login'
     + '&client_id=NHoUARv7KKdO2VcCud3OWzpvZ52b16m8'
     + '&code=' + _authCode
@@ -203,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // check the status code for the result
     //int statusCode = response.statusCode;
-    
+
     // this API passes back the id of the new item added to the body
     String body = response.body;
     print(body);
@@ -212,29 +222,29 @@ class _MyHomePageState extends State<MyHomePage> {
     //_authToken = parsedJson['data']['access_token'];
 
     //Get Authtoken from repsponse
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+    return Container(
+      padding: EdgeInsets.only(
+        top: 64.0,
+        left: 32.0,
+        right: 32.0,
+        bottom: 32.0,
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: RaisedButton(
+      child: Center(
+        child: Column(children: <Widget>[
+          Center(
+            child: RaisedButton(
               onPressed: _launchURL,
               child: Text("Google Login"),
-              ),
             ),
-            Text(_link ?? ""),
-            Text(_authCode ?? ""),
-            Text(_authToken ?? ""),
-          ]
-        ),
+          ),
+          Text(_link ?? ""),
+          Text(_authCode ?? ""),
+          Text(_authToken ?? ""),
+        ]),
       ),
     );
   }

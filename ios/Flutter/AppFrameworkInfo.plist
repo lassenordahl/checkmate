@@ -2,25 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleDevelopmentRegion</key>
-  <string>$(DEVELOPMENT_LANGUAGE)</string>
-  <key>CFBundleExecutable</key>
-  <string>App</string>
-  <key>CFBundleIdentifier</key>
-  <string>io.flutter.flutter.app</string>
-  <key>CFBundleInfoDictionaryVersion</key>
-  <string>6.0</string>
-  <key>CFBundleName</key>
-  <string>App</string>
-  <key>CFBundlePackageType</key>
-  <string>FMWK</string>
-  <key>CFBundleShortVersionString</key>
-  <string>1.0</string>
-  <key>CFBundleSignature</key>
-  <string>????</string>
-  <key>CFBundleVersion</key>
-  <string>1.0</string>
-  <key>MinimumOSVersion</key>
-  <string>8.0</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>App</string>
+	<key>CFBundleIdentifier</key>
+	<string>io.flutter.flutter.app</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>App</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string></string>
+			</array>
+			<key>Item 0</key>
+			<string>ucicm</string>
+			<key>CFBundleURLName</key>
+			<string>com.ucicheckmate.app</string>
+		</dict>
+	</array>
+	<key>MinimumOSVersion</key>
+	<string>8.0</string>
 </dict>
 </plist>

@@ -26,7 +26,6 @@ class _AddTaskState extends State<AddTask> {
     
     return new Scaffold(
         body: Container(
-
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
