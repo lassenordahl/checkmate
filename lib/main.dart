@@ -52,7 +52,6 @@ class HomePageState extends State<HomePage> {
     setState(() {
       _filter = value;
     });
-    print(_filter);
   }
 
   GlobalKey<ScheduledTasksState> _scheduledTasksKey = GlobalKey();

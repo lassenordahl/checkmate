@@ -24,7 +24,7 @@ class LimboTasksState extends State<LimboTasks> {
   // Build the whole list of todo items
   Widget _buildCompletedList() {
 
-    List<Task> _filteredTasks = _completedTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _completedTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
 
     return new Column(
       children: <Widget>[
