@@ -26,7 +26,7 @@ class ScheduledTasksState extends State<ScheduledTasks> {
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
-    List<Task> _filteredTasks = _scheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _scheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
 
     return new Column(
       children: <Widget>[
