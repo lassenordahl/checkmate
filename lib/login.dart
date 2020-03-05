@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   _launchURL() async {
-    verifier = _generateCodeVerifier();
+    String verifier = _generateCodeVerifier();
     //Store verifier on disk
     // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _authCode = code;
         print(code); // E4t8E7TIwhIK97wr
         _exchangeAuthForToken();
-        _changeRoutes();
+        // _changeRoutes();
       }
     } on PlatformException {
       // Handle exception by warning the user their action did not succeed
@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
         String code = _link.split("=")[1];
         _authCode = code;
         _exchangeAuthForToken();
-        _changeRoutes();
+        // _changeRoutes();
       }
     }, onError: (err) {
       // Handle exception by warning the user their action did not succeed
