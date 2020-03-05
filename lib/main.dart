@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-// import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'taskLists/scheduledTasks.dart';
 import 'taskLists/limboTasks.dart';
+import 'taskLists/unscheduledTasks.dart';
 import 'addTask.dart';
 import 'settings.dart';
 import 'login.dart';
@@ -43,10 +43,6 @@ class HomePageState extends State<HomePage> {
     var formatter = new DateFormat('MMM dd, yyyy');
     String formattedDate = formatter.format(now);
     return formattedDate; // 2016-01-25
-  }
-
-  _test() {
-    return 1;
   }
 
   _changeFilter(value) {
@@ -141,16 +137,16 @@ class HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      RaisedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Login()));
-                        },
-                        child: const Text('Login',
-                            style: TextStyle(fontSize: 20)),
-                      ),
+                      // RaisedButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => Login()));
+                      //   },
+                      //   child: const Text('Login',
+                      //       style: TextStyle(fontSize: 20)),
+                      // ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -249,6 +245,7 @@ class HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                new UnscheduledTasks(filter: _filter),
               ],
             ),
           ),
