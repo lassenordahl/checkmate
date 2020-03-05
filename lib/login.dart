@@ -42,15 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //String tempUri = "Google Login";
 
 
-  void _changeRoutes(){
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => App()),
-    );
-  }
-
-  var verifier;
-
   _launchURL() async {
     verifier = _generateCodeVerifier();
     //Store verifier on disk
