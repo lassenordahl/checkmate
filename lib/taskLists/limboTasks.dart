@@ -37,8 +37,8 @@ class LimboTasksState extends State<LimboTasks> {
     print(_completedTasks);
   }
 
-  void _completeTask(String taskId) async {
-    putCompleted(taskId, 1, _getPastTasks);
+  void _completeTask(String taskId, int completed) async {
+    putCompleted(taskId, completed, _getPastTasks);
   }
 
   // Build the whole list of todo items
@@ -148,7 +148,7 @@ class LimboTasksState extends State<LimboTasks> {
                                   color: Colors.green,
                                   onPressed: () {
                                     print("hey there");
-                                    _completeTask(task.id);
+                                    _completeTask(task.id, 1);
                                   })),
                         ),
                       ),
@@ -167,6 +167,7 @@ class LimboTasksState extends State<LimboTasks> {
                                 color: Colors.red,
                                 onPressed: () {
                                   print("hey bear");
+                                  _completeTask(task.id, 2);
                                 },
                               ),
                             ),
