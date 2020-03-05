@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 import '../objects/Task.dart';
+import '../api/api.dart';
 
 class LimboTasks extends StatefulWidget {
   final String filter;
@@ -13,30 +15,73 @@ class LimboTasks extends StatefulWidget {
 }
 
 class LimboTasksState extends State<LimboTasks> {
-  List<Task> _completedTasks = [
-    new Task(123, "Work Out", "Go work out lazy pants", "exercise", -1,
-        new DateTime.now(), new DateTime.now(), 123, 123),
-    new Task(124, "Study", "Study at langson", "academic", -1,
-        new DateTime.now(), new DateTime.now(), 123, 123)
-  ];
 
+  List<Task> _completedTasks = [];
+
+  @override
+  void initState() {
+    _getPastTasks();
+  }
+
+  void _getPastTasks() async {
+    print("getting completed tasks");
+    List<Task> dbTasks = await getPastTasks();
+    setState(() {
+      _completedTasks = dbTasks;
+    });
+    print(_completedTasks);
+  }
+
+  void _completeTask(String taskId, int completed) async {
+    putCompleted(taskId, completed, _getPastTasks);
+  }
 
   // Build the whole list of todo items
   Widget _buildCompletedList() {
+    List<Task> _filteredTasks = _completedTasks
+        .where((task) =>
+            task.name.toLowerCase().contains(widget.filter.toLowerCase()) ||
+            task.taskType.toLowerCase().contains(widget.filter.toLowerCase()))
+        .toList();
 
-    List<Task> _filteredTasks = _completedTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    if (_filteredTasks.length > 0) {
+      return new Column(
+        children: <Widget>[
+          for (var item in _filteredTasks) _buildCompletedItem(item)
+        ],
+      );
+    } else {
+      return new Column(
+        children: <Widget>[
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 28.0),
+              child: Text(
+                "No tasks",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+  }
 
-    return new Column(
-      children: <Widget>[
-        for (var item in _filteredTasks) _buildCompletedItem(item)
-      ],
-    );
+  _formatTime(DateTime startTime, DateTime endTime) {
+    var formatter = new DateFormat('MMM dd,').add_jm();
+    var endFormatter = new DateFormat().add_jm();
+    String formattedDate = formatter.format(startTime);
+    String endFormattedDate = endFormatter.format(endTime);
+    return formattedDate + " - " + endFormattedDate; // 2016-01-25
   }
 
   // Build a single todo itemƒƒ
   Widget _buildCompletedItem(Task task) {
     return new Container(
-      padding: EdgeInsets.only(bottom: 32.0, left: 32.0, right: 32.0),
+      padding: EdgeInsets.only(bottom: 28.0, left: 28.0, right: 28.0),
       child: Container(
         height: 100,
         width: double.infinity,
@@ -54,77 +99,83 @@ class LimboTasksState extends State<LimboTasks> {
           ],
         ),
         child: Container(
-            margin: EdgeInsets.all(24.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          margin: EdgeInsets.all(24.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Text(
+                    task.name,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.0),
+                    child: Text(
+                      _formatTime(task.startTime, task.endTime),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Text(
-                        "Work Out",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+                      Material(
+                        color: Colors.grey,
+                        child: Center(
+                          child: Ink(
+                              decoration: const ShapeDecoration(
+                                shape: CircleBorder(),
+                                color: Colors.white,
+                              ),
+                              child: IconButton(
+                                  icon: Icon(Icons.check),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    print("hey there");
+                                    _completeTask(task.id, 1);
+                                  })),
+                        ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "Time would go here",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        padding: EdgeInsets.only(left: 16.0),
+                        child: Material(
+                          color: Colors.grey,
+                          child: Center(
+                            child: Ink(
+                              decoration: const ShapeDecoration(
+                                shape: CircleBorder(),
+                                color: Colors.white,
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.clear),
+                                color: Colors.red,
+                                onPressed: () {
+                                  print("hey bear");
+                                  _completeTask(task.id, 2);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       )
                     ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Material(
-                            color: Colors.grey,
-                            child: Center(
-                              child: Ink(
-                                  decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: Colors.white,
-                                  ),
-                                  child: IconButton(
-                                      icon: Icon(Icons.check),
-                                      color: Colors.green,
-                                      onPressed: () {
-                                        print("hey there");
-                                      })),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 16.0),
-                            child: Material(
-                              color: Colors.grey,
-                              child: Center(
-                                child: Ink(
-                                    decoration: const ShapeDecoration(
-                                      shape: CircleBorder(),
-                                      color: Colors.white,
-                                    ),
-                                    child: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        color: Colors.red,
-                                        onPressed: () {
-                                          print("hey bear");
-                                        })),
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
                   )
-                ])),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
