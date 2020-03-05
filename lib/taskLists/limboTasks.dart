@@ -15,12 +15,7 @@ class LimboTasks extends StatefulWidget {
 }
 
 class LimboTasksState extends State<LimboTasks> {
-  // List<Task> _completedTasks = [
-  //   new Task(123, "Work Out", "Go work out lazy pants", "exercise", -1,
-  //       new DateTime.now(), new DateTime.now(), 123, 123),
-  //   new Task(124, "Study", "Study at langson", "academic", -1,
-  //       new DateTime.now(), new DateTime.now(), 123, 123)
-  // ];
+
   List<Task> _completedTasks = [];
 
   @override

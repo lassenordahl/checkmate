@@ -19,6 +19,14 @@ class TaskDescriptionState extends State<TaskDescription> {
     return new Hero(
       tag: widget.selectedTask.id.toString(),
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            // Add your onPressed code here!
+          },
+          child: Icon(Icons.navigation),
+          backgroundColor: Color(0xfff88379),
+        ),
         body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(

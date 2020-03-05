@@ -19,9 +19,7 @@ class ScheduledTasks extends StatefulWidget {
 }
 
 class ScheduledTasksState extends State<ScheduledTasks> {
-  // List<Task> _scheduledTasks = [
-  //   new Task.fromJson(json.decode('{"status":"success","data":[{"completed":-1,"user_id":"google-oauth2|111013776664626205966","task_id":"184952c6-31f4-476d-8a03-d942de78d234","start_time":"2020-03-01T01:30:00.000Z","end_time":"2020-03-01T01:30:00.000Z","description":"We gotta finish this","lat":"33","name":"Finish CS125 Project","long":"33","type":"academic"}]}'))
-  // ];
+
   List<Task> _scheduledTasks = [];
 
   @override
