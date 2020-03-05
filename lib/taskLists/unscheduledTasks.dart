@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'dart:convert';
 
 import '../detailPanels/taskDescription.dart';
 import '../pageRouteBuilders/openCardRoute.dart';
@@ -9,37 +8,37 @@ import '../components/taskTypeTag.dart';
 import '../objects/Task.dart';
 import '../api/api.dart';
 
-class ScheduledTasks extends StatefulWidget {
+class UnscheduledTasks extends StatefulWidget {
   final String filter;
 
-  ScheduledTasks({Key key, @required this.filter}) : super(key: key);
+  UnscheduledTasks({Key key, @required this.filter}) : super(key: key);
 
   @override
-  createState() => new ScheduledTasksState();
+  createState() => new UnscheduledTasksState();
 }
 
-class ScheduledTasksState extends State<ScheduledTasks> {
+class UnscheduledTasksState extends State<UnscheduledTasks> {
   // List<Task> _scheduledTasks = [
   //   new Task.fromJson(json.decode('{"status":"success","data":[{"completed":-1,"user_id":"google-oauth2|111013776664626205966","task_id":"184952c6-31f4-476d-8a03-d942de78d234","start_time":"2020-03-01T01:30:00.000Z","end_time":"2020-03-01T01:30:00.000Z","description":"We gotta finish this","lat":"33","name":"Finish CS125 Project","long":"33","type":"academic"}]}'))
   // ];
-  List<Task> _scheduledTasks = [];
+  List<Task> _unscheduledTasks = [];
 
   @override
   void initState() {
-    _getCompletedTasks();
+    _getUnscheduledTasks();
   }
 
-  void _getCompletedTasks() async {
-    List<Task> dbTasks = await getScheduledTasks();
+  void _getUnscheduledTasks() async {
+    List<Task> dbTasks = await getUnscheduledTasks();
     setState(() {
-      _scheduledTasks = dbTasks;
+      _unscheduledTasks = dbTasks;
     });
-    print(_scheduledTasks);
+    print(_unscheduledTasks);
   }
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
-    List<Task> _filteredTasks = _scheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _unscheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
 
     if (_filteredTasks.length > 0) {
       return new Column(
