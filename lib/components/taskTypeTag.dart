@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+
+
 class TaskTypeTag extends StatelessWidget {
   final String taskType;
+  final int activated;
 
-  TaskTypeTag({Key key, this.taskType});
+  TaskTypeTag({Key key, this.taskType, this.activated});
 
   Color _getColor(String type) {
     if (type == "academic") {
@@ -26,8 +29,9 @@ class TaskTypeTag extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(maxWidth: 100, maxHeight: 30),
       decoration: BoxDecoration(
+        color: activated == 0 ? Colors.white: _getColor(taskType),
         border: Border.all(
-          color: _getColor(taskType),
+          color: activated == 0 ? _getColor(taskType) : Colors.white,
         ),
         borderRadius: new BorderRadius.all(
           new Radius.circular(5.0),
@@ -48,7 +52,7 @@ class TaskTypeTag extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: _getColor(taskType),
+                color: activated == 0 ?_getColor(taskType) : Colors.white,
               ),
             ),
           ),

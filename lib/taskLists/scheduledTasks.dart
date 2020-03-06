@@ -128,7 +128,7 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                                 fontWeight: FontWeight.w600),
                           ),
                           SizedBox(width: 14.0),
-                          TaskTypeTag(taskType: task.taskType),
+                          TaskTypeTag(taskType: task.taskType, activated: 0),
                         ],
                       ),
                       Padding(

@@ -49,7 +49,7 @@ class TaskDescriptionState extends State<TaskDescription> {
           onPressed: () {
             _submitTask();
           },
-          child: Icon(Icons.navigation),
+          child: Icon(Icons.save),
           backgroundColor: Color(0xfff88379),
         ),
         body: Container(
@@ -79,7 +79,7 @@ class TaskDescriptionState extends State<TaskDescription> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Task Description",
+                              "Edit a Task",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 28,
