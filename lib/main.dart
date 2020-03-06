@@ -120,9 +120,9 @@ class HomePageState extends State<HomePage> {
             // Future<int> now = new Future(_test());
             // return now;
             final future = Future.delayed(const Duration(seconds: 2), () {
-              _limboState.currentState.initState();
-              _scheduledState.currentState.initState();
-              _unscheduledState.currentState.initState();
+              _limboState.currentState.getPastTasks();
+              _scheduledState.currentState.getScheduledTasks();
+              _unscheduledState.currentState.getUnscheduledTasks();
               print("re-initialized the states");
             });
             return future;

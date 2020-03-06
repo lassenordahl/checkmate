@@ -23,11 +23,11 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
   @override
   void initState() {
-    _getUnscheduledTasks();
+    getUnscheduledTasks();
   }
 
-  void _getUnscheduledTasks() async {
-    List<Task> dbTasks = await getUnscheduledTasks();
+  void getUnscheduledTasks() async {
+    List<Task> dbTasks = await getUnscheduled();
     setState(() {
       _unscheduledTasks = dbTasks;
     });
@@ -122,7 +122,7 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                                 fontWeight: FontWeight.w600),
                           ),
                           SizedBox(width: 14.0),
-                          TaskTypeTag(taskType: task.taskType),
+                          TaskTypeTag(taskType: task.taskType, activated: 0),
                         ],
                       ),
                       Padding(

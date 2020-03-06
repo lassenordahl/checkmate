@@ -20,12 +20,12 @@ class LimboTasksState extends State<LimboTasks> {
 
   @override
   void initState() {
-    _getPastTasks();
+    getPastTasks();
   }
 
-  void _getPastTasks() async {
+  void getPastTasks() async {
     print("getting completed tasks");
-    List<Task> dbTasks = await getPastTasks();
+    List<Task> dbTasks = await getPast();
     setState(() {
       _completedTasks = dbTasks;
     });
@@ -33,7 +33,7 @@ class LimboTasksState extends State<LimboTasks> {
   }
 
   void _completeTask(String taskId, int completed) async {
-    putCompleted(taskId, completed, _getPastTasks);
+    putCompleted(taskId, completed, getPastTasks);
   }
 
   // Build the whole list of todo items

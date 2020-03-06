@@ -1,13 +1,13 @@
 class Task {
-  final String id;
-  final String name;
-  final String description;
-  final String taskType;
-  final DateTime startTime;
-  final DateTime endTime;
-  final double lat;
-  final double long;
-  final int completed;
+  String id;
+  String name;
+  String description;
+  String taskType;
+  DateTime startTime;
+  DateTime endTime;
+  double lat;
+  double long;
+  int completed;
 
   Task({this.id, this.name, this.description, this.taskType, this.completed, this.startTime, this.endTime, this.lat, this.long});
 

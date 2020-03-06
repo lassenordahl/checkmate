@@ -6,7 +6,6 @@ import 'package:search_map_place/search_map_place.dart';
 
 import 'addTaskForm.dart';
 
-
 class AddTask extends StatefulWidget {
   AddTask({Key key, this.title}) : super(key: key);
 
@@ -17,22 +16,18 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-
   String _value;
   String _value2;
 
   @override
   Widget build(BuildContext context) {
-    
     return new Scaffold(
         body: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.cyan[400], Colors.blue[500]]
-                  )
-                ),
+                    colors: [Colors.cyan[400], Colors.blue[500]])),
             child: Column(children: <Widget>[
               new Container(
                   padding: EdgeInsets.only(
@@ -58,18 +53,16 @@ class _AddTaskState extends State<AddTask> {
 
                           new AddTaskForm(),
 
-                        SearchMapPlaceWidget(
-                            apiKey: 'AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY',// YOUR GOOGLE MAPS API KEY
+                          SearchMapPlaceWidget(
+                            apiKey:
+                                'AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY', // YOUR GOOGLE MAPS API KEY
                             onSelected: (Place place) async {
-                                print(place.description);
-                                final geolocation = await place.geolocation;
-                                print(geolocation);
+                              print(place.description);
+                              final geolocation = await place.geolocation;
+                              print(geolocation);
                             },
-                          )
-                          ,
-                          
-                          
-                          
+                          ),
+
                           DropdownButton<String>(
                             items: [
                               DropdownMenuItem<String>(
@@ -145,18 +138,17 @@ class _AddTaskState extends State<AddTask> {
 
                           //Submits the information- Connect to backend
                           Center(
-                          child: RaisedButton(
-                            color: Colors.white,
-                            onPressed: null,
-                            child: Text("Submit Task", 
-                              style:TextStyle(
-                                color: Color(0xffFFFFFF),
-                              ),),
+                            child: RaisedButton(
+                              color: Colors.white,
+                              onPressed: null,
+                              child: Text(
+                                "Submit Task",
+                                style: TextStyle(
+                                  color: Color(0xffFFFFFF),
+                                ),
+                              ),
                             ),
                           ),
-
-                          
-
                         ])
                   ]))
             ])));
