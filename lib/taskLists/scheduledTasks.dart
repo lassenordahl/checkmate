@@ -19,16 +19,15 @@ class ScheduledTasks extends StatefulWidget {
 }
 
 class ScheduledTasksState extends State<ScheduledTasks> {
-
   List<Task> _scheduledTasks = [];
 
   @override
   void initState() {
-    _getCompletedTasks();
+    getScheduledTasks();
   }
 
-  void _getCompletedTasks() async {
-    List<Task> dbTasks = await getScheduledTasks();
+  void getScheduledTasks() async {
+    List<Task> dbTasks = await getScheduled();
     setState(() {
       _scheduledTasks = dbTasks;
     });
@@ -37,7 +36,11 @@ class ScheduledTasksState extends State<ScheduledTasks> {
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
-    List<Task> _filteredTasks = _scheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _scheduledTasks
+        .where((task) =>
+            task.name.toLowerCase().contains(widget.filter.toLowerCase()) ||
+            task.taskType.toLowerCase().contains(widget.filter.toLowerCase()))
+        .toList();
 
     if (_filteredTasks.length > 0) {
       return new Column(
@@ -45,7 +48,7 @@ class ScheduledTasksState extends State<ScheduledTasks> {
           for (var item in _filteredTasks) _buildScheduledTask(item)
         ],
       );
-    }else {
+    } else {
       return new Column(
         children: <Widget>[
           Center(
@@ -81,11 +84,13 @@ class ScheduledTasksState extends State<ScheduledTasks> {
         onTap: () {
           print("clicked ");
           Navigator.push(
-              context,
-              OpenCardRoute(
-                  page: TaskDescription(
+            context,
+            OpenCardRoute(
+              page: new TaskDescription(
                 selectedTask: task,
-              )));
+              ),
+            ),
+          );
         },
         child: Hero(
           tag: task.id.toString(),

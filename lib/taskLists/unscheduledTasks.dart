@@ -23,11 +23,11 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
   @override
   void initState() {
-    _getUnscheduledTasks();
+    getUnscheduledTasks();
   }
 
-  void _getUnscheduledTasks() async {
-    List<Task> dbTasks = await getUnscheduledTasks();
+  void getUnscheduledTasks() async {
+    List<Task> dbTasks = await getUnscheduled();
     setState(() {
       _unscheduledTasks = dbTasks;
     });

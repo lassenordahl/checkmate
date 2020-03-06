@@ -16,7 +16,7 @@ Map<String, String> requestHeaders = {
        'Authorization': authorizationHeader
      };
 
-Future<List<Task>> getPastTasks() async {
+Future<List<Task>> getPast() async {
   final response =
       await http.get(awsUrl + '/development/task/past?completed=-1', headers: requestHeaders);
 
@@ -28,7 +28,7 @@ Future<List<Task>> getPastTasks() async {
   }
 }
 
-Future<List<Task>> getScheduledTasks() async {
+Future<List<Task>> getScheduled() async {
   final response =
       await http.get(awsUrl + '/development/task/future?completed=-1', headers: requestHeaders);
 
@@ -41,7 +41,7 @@ Future<List<Task>> getScheduledTasks() async {
 }
 
 
-Future<List<Task>> getUnscheduledTasks() async {
+Future<List<Task>> getUnscheduled() async {
   final response =
       await http.get(awsUrl + '/development/task/unscheduled?completed=-1', headers: requestHeaders);
 

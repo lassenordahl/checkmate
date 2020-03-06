@@ -24,6 +24,7 @@ class TaskTypeTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(maxWidth: 100, maxHeight: 30),
       decoration: BoxDecoration(
         border: Border.all(
           color: _getColor(taskType),
@@ -33,17 +34,20 @@ class TaskTypeTag extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
               top: 3.0,
               bottom: 3.0,
-              left: 12.0,
-              right: 12.0,
+              left: 3.0,
+              right: 3.0,
             ),
             child: Text(
               taskType,
               style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
                 color: _getColor(taskType),
               ),
             ),

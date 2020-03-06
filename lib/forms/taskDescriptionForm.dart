@@ -7,8 +7,9 @@ import '../objects/Task.dart';
 
 class TaskDescriptionForm extends StatefulWidget {
   final Task selectedTask;
+  final GlobalKey<FormState> formKey;
 
-  TaskDescriptionForm({Key key, this.selectedTask});
+  TaskDescriptionForm({Key key, this.selectedTask, this.formKey}) : super(key: key);
 
   @override
   createState() => TaskDescriptionFormState();
@@ -17,13 +18,20 @@ class TaskDescriptionForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class TaskDescriptionFormState extends State<TaskDescriptionForm> {
-  final _formKey = GlobalKey<FormState>();
+
+  Task currentTask = new Task();
+
+  void submitForm() {
+    print("FORM INFORMATION");
+    print(currentTask.name);
+    print(currentTask.description);
+  }
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -41,6 +49,9 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               }
               return null;
             },
+            onSaved: (String value) {
+              currentTask.name = value;
+            }
           ),
           SizedBox(height: 8.0),
           TextFormField(
@@ -59,6 +70,9 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               }
               return null;
             },
+            onSaved: (String value) {
+              currentTask.description = value;
+            }
           ),
         ],
       ),
