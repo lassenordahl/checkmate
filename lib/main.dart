@@ -15,8 +15,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  // runApp(new Login());
-  runApp(new App());
+  runApp(new Login());
+  //runApp(new App());
 }
 
 class App extends StatelessWidget {
