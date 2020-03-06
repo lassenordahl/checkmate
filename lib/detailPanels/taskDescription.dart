@@ -52,78 +52,82 @@ class TaskDescriptionState extends State<TaskDescription> {
           child: Icon(Icons.save),
           backgroundColor: Color(0xfff88379),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.white, Colors.white])),
-          child: AnimatedOpacity(
-            opacity: currentOpacity,
-            duration: const Duration(seconds: 1),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(
-                    top: 64.0,
-                    left: 32.0,
-                    right: 32.0,
-                    bottom: 24.0,
-                  ),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Edit a Task",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  currentOpacity = 0.0;
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.close,
-                                size: 26,
+        body: SingleChildScrollView(
+          child: Container(
+            height: double.maxFinite,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.white, Colors.white])),
+            child: AnimatedOpacity(
+              opacity: currentOpacity,
+              duration: const Duration(seconds: 1),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 64.0,
+                      left: 32.0,
+                      right: 32.0,
+                      bottom: 24.0,
+                    ),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Edit a Task",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w800),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    currentOpacity = 0.0;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  size: 26,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 32.0,
-                    right: 32.0,
-                    bottom: 32.0,
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 32.0,
+                      right: 32.0,
+                      bottom: 32.0,
+                    ),
+                    child: new TaskDescriptionForm(
+                      key: formState,
+                      formKey: _formKey,
+                      selectedTask: widget.selectedTask,
+                      textColor: Colors.black,
+                    ),
                   ),
-                  child: new TaskDescriptionForm(
-                    key: formState,
-                    formKey: _formKey,
-                    selectedTask: widget.selectedTask,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

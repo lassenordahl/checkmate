@@ -185,7 +185,7 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget> with Single
 
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
-      color: Colors.white,
+      color: Colors.grey[50],
       borderRadius: BorderRadius.all(Radius.circular(6.0)),
       // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
     );

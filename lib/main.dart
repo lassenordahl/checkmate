@@ -130,11 +130,6 @@ class HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Container(
               height: double.maxFinite,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Colors.blue, Colors.purple])),
               child: Column(
                 children: <Widget>[
                   new Container(
