@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'taskLists/unscheduledTasks.dart';
 import 'addTask.dart';
 import 'settings.dart';
 import 'login.dart';
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +57,14 @@ class HomePageState extends State<HomePage> {
     setState(() {
       _filter = value;
     });
+  }
+
+  _getCurrentLocation() async {
+    //GeolocationStatus geolocationStatus  = await Geolocator().checkGeolocationPermissionStatus();
+    //print(geolocationStatus.toString());
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.toString());
+    return position;
   }
 
   @override
@@ -119,6 +130,7 @@ class HomePageState extends State<HomePage> {
           onRefresh: () {
             // Future<int> now = new Future(_test());
             // return now;
+            _getCurrentLocation();
             final future = Future.delayed(const Duration(seconds: 2), () {
               _limboState.currentState.getPastTasks();
               _scheduledState.currentState.getScheduledTasks();
