@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'changeAddressForm.dart';
+
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class Settings extends StatelessWidget {
                                   fontWeight: FontWeight.w800),
                             ),
                           ),
+                          new ChangeAddressForm()
                         ])
                   ]))
             ])));
