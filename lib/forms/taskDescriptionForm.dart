@@ -1,11 +1,16 @@
 // Define a custom Form widget.
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+
 
 import '../components/typeTagButton.dart';
 import '../objects/Task.dart';
+import '../objects/ScheduleTime.dart';
 import '../search_map_place/search_map_place.dart';
-// import 'package:search_map_place/search_map_place.dart';
+import '../api/api.dart';
+
 
 class TaskDescriptionForm extends StatefulWidget {
   final Task selectedTask;
@@ -25,8 +30,12 @@ class TaskDescriptionForm extends StatefulWidget {
 class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   Task currentTask = new Task();
   // currentTask.taskType = widget.selectedTask.taskType;
+  List<String> validTypes = ["exercise", "academic", "personal", "meeting", "work"];
+  List<ScheduleTime> availableTimes = [];
 
   int placeholderPriority = 1;
+  // ScheduleTime selectedTime;
+  DateTime selectedTime;
 
   @override
   void initState() {
@@ -43,6 +52,23 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
     setState(() {
       currentTask.taskType = type;
     });
+
+    getTimes(type);
+  }
+
+  void getTimes(String type) async {
+    List<ScheduleTime> times = await getAnnotatedTimes(type);
+
+    setState(() {
+      availableTimes = times;
+    });
+    print(times);
+  }
+
+  _formatTime(DateTime startTime) {
+    var formatter = new DateFormat('MMM dd,').add_jm();
+    String formattedDate = formatter.format(startTime);
+    return formattedDate; // 2016-01-25
   }
 
   @override
@@ -166,7 +192,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 12.0),
+          SizedBox(height: 12.0,),
           DropdownButton<int>(
             isExpanded: true,
             value: placeholderPriority,
@@ -191,12 +217,58 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
           ),
           SizedBox(height: 18.0),
           Text(
-            "Task Time",
+            "Start Time",
             style: TextStyle(
                 color: widget.textColor,
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
+          SizedBox(height: 12.0),
+          SizedBox(height: 200.0, child: 
+          TimePickerSpinner(
+            is24HourMode: true,
+            normalTextStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black
+            ),
+            minutesInterval: 30,
+            spacing: 30,
+            itemHeight: 40,
+            isForce2Digits: true,
+            onTimeChange: (time) {
+              setState(() {
+                selectedTime = time;
+              });
+            },
+          ),
+          ), 
+          
+          // DropdownButton<ScheduleTime>(
+          //   isExpanded: true,
+          //   value: selectedTime,
+          //   icon: Icon(Icons.arrow_downward),
+          //   iconSize: 24,
+          //   // elevation: 16,
+          //   // underline: Container(
+          //   //   height: 2,
+          //   //   color: Colors.deepPurpleAccent,
+          //   // ),
+          //   onChanged: (ScheduleTime newValue) {
+          //     setState(() {
+          //       selectedTime = newValue;
+          //     });
+          //   },
+          //   items: availableTimes.map<DropdownMenuItem<ScheduleTime>>((ScheduleTime value) {
+          //     return DropdownMenuItem<ScheduleTime>(
+          //       value: value,
+          //       child: Text(_formatTime(DateTime.parse(value.isoTime)), style: TextStyle(
+          //         color: value.completed == 1 ? Colors.green : Colors.red,
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.w400
+          //       )),
+          //     );
+          //   }).toList(),
+          // ),
           SizedBox(height: 12.0),
           Text(
             "Priority",
