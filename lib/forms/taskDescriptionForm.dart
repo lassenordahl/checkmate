@@ -191,6 +191,14 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
           ),
           SizedBox(height: 18.0),
           Text(
+            "Task Time",
+            style: TextStyle(
+                color: widget.textColor,
+                fontSize: 22,
+                fontWeight: FontWeight.w800),
+          ),
+          SizedBox(height: 12.0),
+          Text(
             "Priority",
             style: TextStyle(
                 color: widget.textColor,
