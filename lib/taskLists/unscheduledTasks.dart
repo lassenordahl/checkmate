@@ -8,6 +8,10 @@ import '../components/taskTypeTag.dart';
 import '../objects/Task.dart';
 import '../api/api.dart';
 
+import 'package:geolocator/geolocator.dart';
+import 'dart:collection';
+import 'dart:math' show cos, sqrt, asin;
+
 class UnscheduledTasks extends StatefulWidget {
   final String filter;
 
@@ -26,12 +30,82 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
     getUnscheduledTasks();
   }
 
+  _getCurrentLocation() async {
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  //Sort Tasks based on context
+  Future<List<Task>> sortTasks(var tasks) async {
+      //TODO - Split Tasks into 3 Lists
+      //List<Task> List1;
+      //List<Task> List2;
+      //List<Task> List3;
+      //for (var item in tasks) {
+      //    if(item.priority = "1")
+      //    {List1.add(item)}
+      //    else if(item.priority = "2"){
+      //    {List2.add(item)}
+      //      }
+      //    else if(item.priority = "3"){
+      //    {List3.add(item)}
+      //    }
+      //}
+
+      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      double currentLocationLat = position.latitude;
+      double currentLocationLong = position.longitude;
+
+      //Calculate Distance
+      double getDistance(var lat, var long){
+        var p = 0.017453292519943295;
+        var c = cos;
+        var a = 0.5 - c((lat - currentLocationLat) * p)/2 + 
+              c(currentLocationLat * p) * c(lat * p) * 
+              (1 - c((long - currentLocationLong) * p))/2;
+        return 12742 * asin(sqrt(a));
+      }
+
+      //Assing each task a distance of current location from task
+      HashMap taskDistances = new HashMap<String, double>(); // (Task_id, distanceFromTask)
+      for (var item in tasks) {
+          taskDistances[item.id] = getDistance(item.lat, item.long);
+      }
+
+      //TODO - Sort the 3 lists by Distance
+
+      //Sort by Distance
+      tasks.sort((a, b) {
+        if( taskDistances[a.id] > taskDistances[b.id]){
+          return 1; //a is a closer distance
+        }else{
+          return -1; //a ordered after cause longer distance
+        }
+      } );
+
+      //TODO - Merge 3 lists into one in correct order based on priority!
+      //List<Task> mainTasks
+      //for (var item in List3) mainTasks.add(item);
+      //for (var item in List2) mainTasks.add(item);    
+      //for (var item in List1) mainTasks.add(item);
+
+      //Return mainTasks
+      return tasks;
+  }
+
   void getUnscheduledTasks() async {
     List<Task> dbTasks = await getUnscheduled();
+    
+    //Sort Unscheduled tasks by priority, distance from task, then by task time
+    dbTasks = await sortTasks(dbTasks);
+
     setState(() {
+      print("Enter");
       _unscheduledTasks = dbTasks;
     });
+    print("********************");
     print(_unscheduledTasks);
+    print("********************");
   }
 
   // Build the whole list of todo items
