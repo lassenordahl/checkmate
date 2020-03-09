@@ -11,7 +11,7 @@ class Task {
   int priority;
   int taskTime;
 
-  Task({this.id, this.name, this.description, this.taskType, this.completed, this.startTime, this.endTime, this.lat, this.long, this.priority});
+  Task({this.id, this.name, this.description, this.taskType, this.completed, this.startTime, this.endTime, this.lat, this.long, this.priority, this.taskTime});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
@@ -24,6 +24,7 @@ class Task {
       endTime: json['end_time'] == null ? DateTime.now() : DateTime.parse(json['end_time']), 
       lat: double.parse(json['lat']), 
       long: double.parse(json['long']),
+      taskTime: json['task_time'] == null ? 1 : json['task_time'],
       priority: json['priority'] == null ? 3 : json['priority']
     );
   }

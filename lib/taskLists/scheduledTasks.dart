@@ -68,9 +68,10 @@ class ScheduledTasksState extends State<ScheduledTasks> {
     }
   }
 
-  _formatTime(DateTime startTime, DateTime endTime) {
+  _formatTime(DateTime startTime, int taskTime) {
     var formatter = new DateFormat('MMM dd,').add_jm();
-    var endFormatter = new DateFormat().add_jm();
+     var endFormatter = new DateFormat().add_jm();
+    DateTime endTime = startTime.add(Duration(hours: taskTime));
     String formattedDate = formatter.format(startTime);
     String endFormattedDate = endFormatter.format(endTime);
     return formattedDate + " - " + endFormattedDate; // 2016-01-25
@@ -132,9 +133,9 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 10.0),
+                        padding: EdgeInsets.only(top: 14.0),
                         child: Text(
-                          _formatTime(task.startTime, task.endTime),
+                          _formatTime(task.startTime, task.taskTime),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -151,7 +152,7 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
-                            fontWeight: FontWeight.w800),
+                            fontWeight: FontWeight.w400),
                       )
                     ],
                   ),

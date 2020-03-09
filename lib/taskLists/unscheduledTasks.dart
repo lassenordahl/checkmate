@@ -22,7 +22,6 @@ class UnscheduledTasks extends StatefulWidget {
 }
 
 class UnscheduledTasksState extends State<UnscheduledTasks> {
-
   List<Task> _unscheduledTasks = [];
 
   @override
@@ -31,7 +30,8 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
   }
 
   _getCurrentLocation() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
@@ -67,11 +67,22 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
         return 12742 * asin(sqrt(a));
       }
 
-      //Assing each task a distance of current location from task
-      HashMap taskDistances = new HashMap<String, double>(); // (Task_id, distanceFromTask)
-      for (var item in tasks) {
-          taskDistances[item.id] = getDistance(item.lat, item.long);
+
+    //Sort by Distance
+    tasks.sort((a, b) {
+      if (taskDistances[a.id] > taskDistances[b.id]) {
+        return 1; //a is a closer distance
+      } else {
+        return -1; //a ordered after cause longer distance
       }
+    });
+
+    //TODO - Merge 3 lists into one in correct order based on priority!
+    //List<Task> mainTasks
+    //for (var item in List3) mainTasks.add(item);
+    //for (var item in List2) mainTasks.add(item);
+    //for (var item in List1) mainTasks.add(item);
+
 
       //Sort Function
       int sort_Tasks(var a, var b){
@@ -96,11 +107,12 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
       //Return mainTasks
       return mainTasks;
+
   }
 
   void getUnscheduledTasks() async {
     List<Task> dbTasks = await getUnscheduled();
-    
+
     //Sort Unscheduled tasks by priority, distance from task, then by task time
     dbTasks = await sortTasks(dbTasks);
 
@@ -115,7 +127,11 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
-    List<Task> _filteredTasks = _unscheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _unscheduledTasks
+        .where((task) =>
+            task.name.toLowerCase().contains(widget.filter.toLowerCase()) ||
+            task.taskType.toLowerCase().contains(widget.filter.toLowerCase()))
+        .toList();
 
     if (_filteredTasks.length > 0) {
       return new Column(
@@ -123,7 +139,7 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
           for (var item in _filteredTasks) _buildScheduledTask(item)
         ],
       );
-    }else {
+    } else {
       return new Column(
         children: <Widget>[
           Center(
@@ -143,9 +159,10 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
     }
   }
 
-  _formatTime(DateTime startTime, DateTime endTime) {
+  _formatTime(DateTime startTime, int taskTime) {
     var formatter = new DateFormat('MMM dd,').add_jm();
-    var endFormatter = new DateFormat().add_jm();
+     var endFormatter = new DateFormat().add_jm();
+    DateTime endTime = startTime.add(Duration(hours: taskTime));
     String formattedDate = formatter.format(startTime);
     String endFormattedDate = endFormatter.format(endTime);
     return formattedDate + " - " + endFormattedDate; // 2016-01-25
@@ -205,9 +222,9 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 10.0),
+                        padding: EdgeInsets.only(top: 14.0),
                         child: Text(
-                          _formatTime(task.startTime, task.endTime),
+                          _formatTime(task.startTime, task.taskTime),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -218,7 +235,15 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      Text(
+                        task.priority.toString(),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400),
+                      )
+                    ],
                   ),
                 ],
               ),
