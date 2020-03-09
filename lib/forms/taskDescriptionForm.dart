@@ -30,7 +30,8 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   Task currentTask = new Task();
 
   List<ScheduleTime> availableTimes = [];
-  int placeholderPriority = 1;
+  int taskTime = 1;
+  int priority = 1;
   ScheduleTime selectedRecTime;
   DateTime selectedTime;
   DateTime selectedDay;
@@ -41,20 +42,40 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   @override
   void initState() {
     currentTask = widget.selectedTask;
+    if (widget.selectedTask.taskTime != null) {
+      taskTime = widget.selectedTask.taskTime;
+    }
+
+    if (widget.selectedTask.priority != null) {
+      priority = widget.selectedTask.priority;
+    }
     // currentTask.taskType = widget.selectedTask.taskType;
     updateTaskType(currentTask.taskType);
     generateWeek();
   }
 
   void submitForm() {
-    print("FORM INFORMATION");
+    
+    currentTask.priority = priority;
+    currentTask.taskTime = taskTime;
+
+    if (usingRecommended) {
+      currentTask.startTime = DateTime.parse(selectedRecTime.isoTime);
+    } else {
+      currentTask.startTime = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, selectedTime.hour, selectedTime.minute, 0);
+    }
 
     if (currentTask.id == null) {
       // Post a task
+      print("in post");
+      postTask(currentTask);
     } else {
       // Put a task
-      putTask(currentTask);
+      print("not in post");
+      putTaskPriority(currentTask);
+      putTaskTime(currentTask);
     }
+    Navigator.pop(context);
   }
 
   void updateTaskType(String type) {
@@ -213,7 +234,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 12.0),
           Container(
             constraints: BoxConstraints(maxWidth: 1350),
             child: SearchMapPlaceWidget(
@@ -226,7 +247,34 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               },
             ),
           ),
-          SizedBox(height: 18.0),
+          SizedBox(height: 12.0),
+          Text(
+            "Priority",
+            style: TextStyle(
+                color: widget.textColor,
+                fontSize: 22,
+                fontWeight: FontWeight.w800),
+          ),
+          SizedBox(height: 12.0),
+          DropdownButton<int>(
+            isExpanded: true,
+            hint: Text("Priority"),
+            value: priority,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24,
+            onChanged: (int newValue) {
+              setState(() {
+                priority = newValue;
+              });
+            },
+            items: <int>[1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
+              return DropdownMenuItem<int>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 12.0),
           Text(
             "Task Length",
             style: TextStyle(
@@ -239,18 +287,18 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
           ),
           DropdownButton<int>(
             isExpanded: true,
-            value: placeholderPriority,
+            value: taskTime,
             icon: Icon(Icons.arrow_downward),
             iconSize: 24,
             onChanged: (int newValue) {
               setState(() {
-                placeholderPriority = newValue;
+                taskTime = newValue;
               });
             },
             items: <int>[1, 2, 3].map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(
                 value: value,
-                child: Text(value.toString()),
+                child: Text(value.toString() + (value == 1 ? " hour" : " hours")),
               );
             }).toList(),
           ),
@@ -363,33 +411,6 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 selectedRecTime = null;
               });
             },
-          ),
-          SizedBox(height: 12.0),
-          Text(
-            "Priority",
-            style: TextStyle(
-                color: widget.textColor,
-                fontSize: 22,
-                fontWeight: FontWeight.w800),
-          ),
-          SizedBox(height: 12.0),
-          DropdownButton<int>(
-            isExpanded: true,
-            hint: Text("Priority"),
-            value: currentTask.priority,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: 24,
-            onChanged: (int newValue) {
-              setState(() {
-                currentTask.priority = newValue;
-              });
-            },
-            items: <int>[1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: Text(value.toString()),
-              );
-            }).toList(),
           ),
         ],
       ),

@@ -101,21 +101,60 @@ void putCompleted(String taskId, int completed, Function getTasks) async {
   }
 }
 
-void putTask(Task task) async {
-  // String jsonObject = '{"task_id": "'+  taskId + '", "completed": "' + completed.toString() + '"}';
+void postTask(Task task) async {
 
-  print(json.encode(task.toJson()));
+  String jsonObject = json.encode(task.toJson(true));
 
-  // final response =
-  //     await http.put('https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/task/completed', headers: requestHeaders, body: jsonObject);
+  print(awsUrl + '/development/task');
+  print(jsonObject);
 
-  // if (response.statusCode == 200) {
-  //   putCompletedKNN(Task.fromJson(json.decode(response.body)['data']));
-  //   getTasks();
-  // } else {
-  //   // If the server did not return a 200 OK response, then throw an exception.
-  //   throw Exception('Failed to update completion');
-  // }
+  final response =
+      await http.post(awsUrl + '/development/task', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully posted task");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to post task');
+  }
+}
+
+void putTaskPriority(Task task) async {
+  String jsonObject = '{"task_id": "'+  task.id + '", "priority": "' + task.priority.toString() + '"}';
+
+  // String jsonObject = json.encode(task.toJson());
+
+  print(awsUrl + '/development/task/priority');
+  print(jsonObject);
+
+  final response =
+      await http.put(awsUrl + '/development/task/priority', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully updated task priority");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to update task priority');
+  }
+}
+
+void putTaskTime(Task task) async {
+  String jsonObject = '{"task_id": "'+  task.id + '", "start_time": "' + task.startTime.toIso8601String() + '", "task_time": ' + task.taskTime.toString() + '}';
+
+  // String jsonObject = json.encode(task.toJson());
+
+  print(awsUrl + '/development/task/time');
+  print(jsonObject);
+
+  final response =
+      await http.put(awsUrl + '/development/task/time', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully updated task time");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to update task time');
+  }
 }
 
 void putCompletedKNN(Task completedTask) async {

@@ -9,6 +9,7 @@ class Task {
   double long;
   int completed;
   int priority;
+  int taskTime;
 
   Task({this.id, this.name, this.description, this.taskType, this.completed, this.startTime, this.endTime, this.lat, this.long, this.priority});
 
@@ -23,21 +24,27 @@ class Task {
       endTime: json['end_time'] == null ? DateTime.now() : DateTime.parse(json['end_time']), 
       lat: double.parse(json['lat']), 
       long: double.parse(json['long']),
-      // priority: json['priority'] == null ? 5 : json['priority']
-      priority: 1
+      priority: json['priority'] == null ? 5 : json['priority']
     );
   }
 
-  Map<String, dynamic> toJson() => 
-  {
-      'id': id,
+  Map<String, dynamic> toJson(bool newTask) {
+    Map<String, dynamic> returnMap = {
       'name': name,
       'description': description,
-      'taskType': taskType,
-      'startTime': startTime.toIso8601String(),
-      'lat': lat,
-      'long': long,
-      'completed': completed,
+      'type': taskType,
+      'start_time': startTime.toIso8601String(),
+      'lat': "33",
+      'long': "33",
+      'task_time': taskTime,
       'priority': priority,
-  };
+    };
+
+    if (!newTask) {
+      returnMap['task_id'] = id;
+    }
+
+    return returnMap;
+  }
+  
 }
