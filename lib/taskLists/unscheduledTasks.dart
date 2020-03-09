@@ -22,7 +22,6 @@ class UnscheduledTasks extends StatefulWidget {
 }
 
 class UnscheduledTasksState extends State<UnscheduledTasks> {
-
   List<Task> _unscheduledTasks = [];
 
   @override
@@ -31,71 +30,77 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
   }
 
   _getCurrentLocation() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
   //Sort Tasks based on context
   Future<List<Task>> sortTasks(var tasks) async {
-      //TODO - Split Tasks into 3 Lists
-      //List<Task> List1;
-      //List<Task> List2;
-      //List<Task> List3;
-      //for (var item in tasks) {
-      //    if(item.priority = "1")
-      //    {List1.add(item)}
-      //    else if(item.priority = "2"){
-      //    {List2.add(item)}
-      //      }
-      //    else if(item.priority = "3"){
-      //    {List3.add(item)}
-      //    }
-      //}
+    //TODO - Split Tasks into 3 Lists
+    //List<Task> List1;
+    //List<Task> List2;
+    //List<Task> List3;
+    //for (var item in tasks) {
+    //    if(item.priority = "1")
+    //    {List1.add(item)}
+    //    else if(item.priority = "2"){
+    //    {List2.add(item)}
+    //      }
+    //    else if(item.priority = "3"){
+    //    {List3.add(item)}
+    //    }
+    //}
 
-      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      double currentLocationLat = position.latitude;
-      double currentLocationLong = position.longitude;
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    double currentLocationLat = position.latitude;
+    double currentLocationLong = position.longitude;
 
-      //Calculate Distance
-      double getDistance(var lat, var long){
-        var p = 0.017453292519943295;
-        var c = cos;
-        var a = 0.5 - c((lat - currentLocationLat) * p)/2 + 
-              c(currentLocationLat * p) * c(lat * p) * 
-              (1 - c((long - currentLocationLong) * p))/2;
-        return 12742 * asin(sqrt(a));
+    //Calculate Distance
+    double getDistance(var lat, var long) {
+      var p = 0.017453292519943295;
+      var c = cos;
+      var a = 0.5 -
+          c((lat - currentLocationLat) * p) / 2 +
+          c(currentLocationLat * p) *
+              c(lat * p) *
+              (1 - c((long - currentLocationLong) * p)) /
+              2;
+      return 12742 * asin(sqrt(a));
+    }
+
+    //Assing each task a distance of current location from task
+    HashMap taskDistances =
+        new HashMap<String, double>(); // (Task_id, distanceFromTask)
+    for (var item in tasks) {
+      taskDistances[item.id] = getDistance(item.lat, item.long);
+    }
+
+    //TODO - Sort the 3 lists by Distance
+
+    //Sort by Distance
+    tasks.sort((a, b) {
+      if (taskDistances[a.id] > taskDistances[b.id]) {
+        return 1; //a is a closer distance
+      } else {
+        return -1; //a ordered after cause longer distance
       }
+    });
 
-      //Assing each task a distance of current location from task
-      HashMap taskDistances = new HashMap<String, double>(); // (Task_id, distanceFromTask)
-      for (var item in tasks) {
-          taskDistances[item.id] = getDistance(item.lat, item.long);
-      }
+    //TODO - Merge 3 lists into one in correct order based on priority!
+    //List<Task> mainTasks
+    //for (var item in List3) mainTasks.add(item);
+    //for (var item in List2) mainTasks.add(item);
+    //for (var item in List1) mainTasks.add(item);
 
-      //TODO - Sort the 3 lists by Distance
-
-      //Sort by Distance
-      tasks.sort((a, b) {
-        if( taskDistances[a.id] > taskDistances[b.id]){
-          return 1; //a is a closer distance
-        }else{
-          return -1; //a ordered after cause longer distance
-        }
-      } );
-
-      //TODO - Merge 3 lists into one in correct order based on priority!
-      //List<Task> mainTasks
-      //for (var item in List3) mainTasks.add(item);
-      //for (var item in List2) mainTasks.add(item);    
-      //for (var item in List1) mainTasks.add(item);
-
-      //Return mainTasks
-      return tasks;
+    //Return mainTasks
+    return tasks;
   }
 
   void getUnscheduledTasks() async {
     List<Task> dbTasks = await getUnscheduled();
-    
+
     //Sort Unscheduled tasks by priority, distance from task, then by task time
     dbTasks = await sortTasks(dbTasks);
 
@@ -110,7 +115,11 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
-    List<Task> _filteredTasks = _unscheduledTasks.where((task) => task.name.toLowerCase().contains(widget.filter.toLowerCase()) || task.taskType.toLowerCase().contains(widget.filter.toLowerCase())).toList();
+    List<Task> _filteredTasks = _unscheduledTasks
+        .where((task) =>
+            task.name.toLowerCase().contains(widget.filter.toLowerCase()) ||
+            task.taskType.toLowerCase().contains(widget.filter.toLowerCase()))
+        .toList();
 
     if (_filteredTasks.length > 0) {
       return new Column(
@@ -118,7 +127,7 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
           for (var item in _filteredTasks) _buildScheduledTask(item)
         ],
       );
-    }else {
+    } else {
       return new Column(
         children: <Widget>[
           Center(
@@ -138,9 +147,10 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
     }
   }
 
-  _formatTime(DateTime startTime, DateTime endTime) {
+  _formatTime(DateTime startTime, int taskTime) {
     var formatter = new DateFormat('MMM dd,').add_jm();
-    var endFormatter = new DateFormat().add_jm();
+     var endFormatter = new DateFormat().add_jm();
+    DateTime endTime = startTime.add(Duration(hours: taskTime));
     String formattedDate = formatter.format(startTime);
     String endFormattedDate = endFormatter.format(endTime);
     return formattedDate + " - " + endFormattedDate; // 2016-01-25
@@ -200,9 +210,9 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 10.0),
+                        padding: EdgeInsets.only(top: 14.0),
                         child: Text(
-                          _formatTime(task.startTime, task.endTime),
+                          _formatTime(task.startTime, task.taskTime),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -213,7 +223,15 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      Text(
+                        task.priority.toString(),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400),
+                      )
+                    ],
                   ),
                 ],
               ),

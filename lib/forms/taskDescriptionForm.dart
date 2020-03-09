@@ -79,11 +79,23 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   }
 
   void updateTaskType(String type) {
-    setState(() {
-      currentTask.taskType = type;
-    });
+    if (type != null) {
+      setState(() {
+        currentTask.taskType = type;
+      });
 
-    getTimes(type);
+      if (taskTime != null) {
+        getTimes(type, taskTime);
+      }
+    }
+  }
+
+  void updateTaskTime(int time) {
+    if (time != null) {
+      if (currentTask.taskType != null) {
+        getTimes(currentTask.taskType, taskTime);
+      }
+    };
   }
 
   void generateWeek() {
@@ -97,9 +109,9 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
     });
   }
 
-  void getTimes(String type) async {
+  void getTimes(String type, int taskTime) async {
     Map<String, List<ScheduleTime>> recommendedTimes =
-        await getRecommendedTimes(type);
+        await getRecommendedTimes(type, taskTime);
 
     setState(() {
       availableTimes = _getTimesFromRecommended(recommendedTimes);
@@ -109,6 +121,18 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   List<ScheduleTime> _getTimesFromRecommended(
       Map<String, List<ScheduleTime>> recommendedTimes) {
     List<ScheduleTime> times = new List<ScheduleTime>();
+
+
+
+    if (currentTask.startTime != null) {
+      times.add(ScheduleTime(completed: -1, isoTime: "Current Time", taskType: ""));
+      ScheduleTime current = ScheduleTime(completed: 0, isoTime: currentTask.startTime.toIso8601String(), taskType: currentTask.taskType);
+      times.add(current);
+      setState(() {
+        usingRecommended = true;
+        selectedRecTime = current;
+      });
+    }
 
     String prevWeekday = "";
     recommendedTimes.forEach((weekday, listedTimes) {
@@ -294,6 +318,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               setState(() {
                 taskTime = newValue;
               });
+              updateTaskTime(newValue);
             },
             items: <int>[1, 2, 3].map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(

@@ -26,17 +26,17 @@ class LimboTasksState extends State<LimboTasks> {
   }
 
   void getPastTasks() async {
-    print("getting completed tasks");
     List<Task> dbTasks = await getPast();
     setState(() {
       _completedTasks = dbTasks;
     });
-    print(_completedTasks);
   }
 
   void _completeTask(String taskId, int completed, Task task) async {
     if (completed == 0) {
       _showDialog(taskId, completed, task);
+    } else {
+      putCompleted(taskId, completed, getPastTasks);
     }
   }
 
@@ -184,7 +184,6 @@ class LimboTasksState extends State<LimboTasks> {
                                   icon: Icon(Icons.check),
                                   color: Colors.green,
                                   onPressed: () {
-                                    print("hey there");
                                     _completeTask(task.id, 1, task);
                                   })),
                         ),

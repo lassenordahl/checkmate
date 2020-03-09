@@ -19,9 +19,12 @@ Map<String, String> requestHeaders = {
      };
 
 
-Future<Map<String,List<ScheduleTime>>> getRecommendedTimes(String taskType) async {
+Future<Map<String,List<ScheduleTime>>> getRecommendedTimes(String taskType, int taskTime) async {
+
+  print(knnUrl + '/1/times/recommended?task_type=' + taskType + '&task_length=' + taskTime.toString());
+
   final response =
-      await http.get(knnUrl + '/1/times/recommended?task_type=' + taskType, headers: requestHeaders);
+      await http.get(knnUrl + '/1/times/recommended?task_type=' + taskType + '&task_length=' + taskTime.toString(), headers: requestHeaders);
 
   if (response.statusCode == 200) {
     Map<String, List<ScheduleTime>> returnMap = new Map<String, List<ScheduleTime>>();
