@@ -145,7 +145,15 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      Text(
+                        task.priority.toString(),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800),
+                      )
+                    ],
                   ),
                 ],
               ),
