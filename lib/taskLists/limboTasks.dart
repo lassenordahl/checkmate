@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../objects/Task.dart';
 import '../api/api.dart';
+import '../detailPanels/taskDescription.dart';
+import '../pageRouteBuilders/openCardRoute.dart';
 
 class LimboTasks extends StatefulWidget {
   final String filter;
@@ -32,8 +34,48 @@ class LimboTasksState extends State<LimboTasks> {
     print(_completedTasks);
   }
 
-  void _completeTask(String taskId, int completed) async {
-    putCompleted(taskId, completed, getPastTasks);
+  void _completeTask(String taskId, int completed, Task task) async {
+    if (completed == 0) {
+      _showDialog(taskId, completed, task);
+    }
+  }
+
+  void _showDialog(String taskId, int completed, Task task) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Reschedule Task?"),
+          content: new Text("You didn't complete the task, would you like to reschedule it?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Reschedule"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  OpenCardRoute(
+                    page: new TaskDescription(
+                      selectedTask: task,
+                    ),
+                  ),
+                );
+              },
+            ),
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                putCompleted(taskId, completed, getPastTasks);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   // Build the whole list of todo items
@@ -143,7 +185,7 @@ class LimboTasksState extends State<LimboTasks> {
                                   color: Colors.green,
                                   onPressed: () {
                                     print("hey there");
-                                    _completeTask(task.id, 1);
+                                    _completeTask(task.id, 1, task);
                                   })),
                         ),
                       ),
@@ -162,7 +204,7 @@ class LimboTasksState extends State<LimboTasks> {
                                 color: Colors.red,
                                 onPressed: () {
                                   print("hey bear");
-                                  _completeTask(task.id, 2);
+                                  _completeTask(task.id, 0, task);
                                 },
                               ),
                             ),
