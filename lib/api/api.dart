@@ -10,7 +10,7 @@ String knnUrl = "https://checkmate-data-backend.herokuapp.com/api";
 String devUrl = "localhost:5000/api";
 String userId = "1";
 
-String authorizationHeader = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFqRTJNemN5TWpKRE1ERTFSRVE0UXpRME1UQkJOVVpDUlRreU1ESXhSVVpFTnpFd09EVTFOdyJ9.eyJpc3MiOiJodHRwczovL2xlYXJuaW5nY2FsZW5kYXItZGV2ZWxvcG1lbnQuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTExMDEzNzc2NjY0NjI2MjA1OTY2IiwiYXVkIjpbImh0dHBzOi8vYnR0bW5zNDVtYi5leGVjdXRlLWFwaS51cy13ZXN0LTIuYW1hem9uYXdzLmNvbS9kZXZlbG9wbWVudCIsImh0dHBzOi8vbGVhcm5pbmdjYWxlbmRhci1kZXZlbG9wbWVudC5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTgzNjQzMTA4LCJleHAiOjE1ODM3Mjk1MDgsImF6cCI6Ik5Ib1VBUnY3S0tkTzJWY0N1ZDNPV3pwdlo1MmIxNm04Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBvZmZsaW5lX2FjY2VzcyJ9.dJzf1IMNoXX7fL2myMjl-WcNo41mnNv38C4O6Xz7RS5Wij6cPl1mHxdJ-yJEmcnWASbHi61Hs3k5HpCZOklxlabDU8kJ3_wNtO7z7o3sXQ_zTx7Tn_YJYYLBVztu-06jJ8KSe05mfgiG6JZ8H_uDf_TS2egtrym_CrvPWVr-ON8Z9KT6qEjibNeeTFG0PXEMnuw7Ur_maR4PAg9h91xaOBEEKnQ7awMRz8k-6FfDYAmMUjDrgCdDcmQsclxnHKFOiNRuTE0A_i0qDJFXvar0CX_JfG4VuqZ2dgQ6IC9GjnJ70I9dX-KGhyHK3_Gm1jwGdBAQixYl_tCsYztS93V4Pw";
+String authorizationHeader = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFqRTJNemN5TWpKRE1ERTFSRVE0UXpRME1UQkJOVVpDUlRreU1ESXhSVVpFTnpFd09EVTFOdyJ9.eyJpc3MiOiJodHRwczovL2xlYXJuaW5nY2FsZW5kYXItZGV2ZWxvcG1lbnQuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTExMDEzNzc2NjY0NjI2MjA1OTY2IiwiYXVkIjpbImh0dHBzOi8vYnR0bW5zNDVtYi5leGVjdXRlLWFwaS51cy13ZXN0LTIuYW1hem9uYXdzLmNvbS9kZXZlbG9wbWVudCIsImh0dHBzOi8vbGVhcm5pbmdjYWxlbmRhci1kZXZlbG9wbWVudC5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTgzNzMxMTEyLCJleHAiOjE1ODM4MTc1MTIsImF6cCI6Ik5Ib1VBUnY3S0tkTzJWY0N1ZDNPV3pwdlo1MmIxNm04Iiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBvZmZsaW5lX2FjY2VzcyJ9.Wu47aiMmEsFSJtemjd7lVIxkOoYQ0Lu-XX-OA747I71F_HnmeAd5GH5UlZ0c4YizdRg9PN8Oe74VTKvE6MOv00AAb_8Xkyayng_ROPgE-J4_dEIG6jfTd-WjqqPDHYnzXX5XR8waxbMN1OlMVGepQI4dObqo6qUQwF5ZYle-ERUzV9WFKsjKPb1GSh6uHF5nhAfV1dU7LWNJN8NbswBzAo2v16MpmghGQsIn9N3jyaJBlksY9e6yd_UJ3ag26XHTjASp9MO3Y_d8RP3MU45LFiBDedLRdA2ifIfZyOwmx1N3jKYU4UaYeXtJyrdYIJrZAw7Fg4JhzXvvAfADrgmyiQ";
 
 Map<String, String> requestHeaders = {
        'Content-type': 'application/json',
@@ -101,21 +101,60 @@ void putCompleted(String taskId, int completed, Function getTasks) async {
   }
 }
 
-void putTask(Task task) async {
-  // String jsonObject = '{"task_id": "'+  taskId + '", "completed": "' + completed.toString() + '"}';
+void postTask(Task task) async {
 
-  print(json.encode(task.toJson()));
+  String jsonObject = json.encode(task.toJson(true));
 
-  // final response =
-  //     await http.put('https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/task/completed', headers: requestHeaders, body: jsonObject);
+  print(awsUrl + '/development/task');
+  print(jsonObject);
 
-  // if (response.statusCode == 200) {
-  //   putCompletedKNN(Task.fromJson(json.decode(response.body)['data']));
-  //   getTasks();
-  // } else {
-  //   // If the server did not return a 200 OK response, then throw an exception.
-  //   throw Exception('Failed to update completion');
-  // }
+  final response =
+      await http.post(awsUrl + '/development/task', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully posted task");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to post task');
+  }
+}
+
+void putTaskPriority(Task task) async {
+  String jsonObject = '{"task_id": "'+  task.id + '", "priority": "' + task.priority.toString() + '"}';
+
+  // String jsonObject = json.encode(task.toJson());
+
+  print(awsUrl + '/development/task/priority');
+  print(jsonObject);
+
+  final response =
+      await http.put(awsUrl + '/development/task/priority', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully updated task priority");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to update task priority');
+  }
+}
+
+void putTaskTime(Task task) async {
+  String jsonObject = '{"task_id": "'+  task.id + '", "start_time": "' + task.startTime.toIso8601String() + '", "task_time": ' + task.taskTime.toString() + '}';
+
+  // String jsonObject = json.encode(task.toJson());
+
+  print(awsUrl + '/development/task/time');
+  print(jsonObject);
+
+  final response =
+      await http.put(awsUrl + '/development/task/time', headers: requestHeaders, body: jsonObject);
+
+  if (response.statusCode == 200) {
+    print("Successfully updated task time");
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to update task time');
+  }
 }
 
 void putCompletedKNN(Task completedTask) async {
