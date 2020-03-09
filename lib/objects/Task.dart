@@ -25,7 +25,7 @@ class Task {
       lat: double.parse(json['lat']), 
       long: double.parse(json['long']),
       taskTime: json['task_time'] == null ? 1 : json['task_time'],
-      priority: json['priority'] == null ? 5 : json['priority']
+      priority: json['priority'] == null ? 3 : json['priority']
     );
   }
 

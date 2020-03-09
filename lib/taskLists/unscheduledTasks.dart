@@ -37,47 +37,36 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
   //Sort Tasks based on context
   Future<List<Task>> sortTasks(var tasks) async {
-    //TODO - Split Tasks into 3 Lists
-    //List<Task> List1;
-    //List<Task> List2;
-    //List<Task> List3;
-    //for (var item in tasks) {
-    //    if(item.priority = "1")
-    //    {List1.add(item)}
-    //    else if(item.priority = "2"){
-    //    {List2.add(item)}
-    //      }
-    //    else if(item.priority = "3"){
-    //    {List3.add(item)}
-    //    }
-    //}
+      //Split Tasks into 3 Lists
+      List<Task> list1=[];
+      List<Task> list2=[];
+      List<Task> list3=[];
+      
+      for (var item in tasks) {
+          print(item.priority);
+          if(item.priority == 1){print("enter1"); list1.add(item);}
+          else if(item.priority == 2){print("enter2"); list2.add(item);}
+          else if(item.priority == 3){print("enter3"); list3.add(item);}
+      }
+      print(list1);
+      print(list2);
+      print(list3);
+      for (var item in list3) { print(item.name) ;}
 
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    double currentLocationLat = position.latitude;
-    double currentLocationLong = position.longitude;
+      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      double currentLocationLat = position.latitude;
+      double currentLocationLong = position.longitude;
 
-    //Calculate Distance
-    double getDistance(var lat, var long) {
-      var p = 0.017453292519943295;
-      var c = cos;
-      var a = 0.5 -
-          c((lat - currentLocationLat) * p) / 2 +
-          c(currentLocationLat * p) *
-              c(lat * p) *
-              (1 - c((long - currentLocationLong) * p)) /
-              2;
-      return 12742 * asin(sqrt(a));
-    }
+      //Calculate Distance
+      double getDistance(var lat, var long){
+        var p = 0.017453292519943295;
+        var c = cos;
+        var a = 0.5 - c((lat - currentLocationLat) * p)/2 + 
+              c(currentLocationLat * p) * c(lat * p) * 
+              (1 - c((long - currentLocationLong) * p))/2;
+        return 12742 * asin(sqrt(a));
+      }
 
-    //Assing each task a distance of current location from task
-    HashMap taskDistances =
-        new HashMap<String, double>(); // (Task_id, distanceFromTask)
-    for (var item in tasks) {
-      taskDistances[item.id] = getDistance(item.lat, item.long);
-    }
-
-    //TODO - Sort the 3 lists by Distance
 
     //Sort by Distance
     tasks.sort((a, b) {
@@ -94,8 +83,31 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
     //for (var item in List2) mainTasks.add(item);
     //for (var item in List1) mainTasks.add(item);
 
-    //Return mainTasks
-    return tasks;
+
+      //Sort Function
+      int sort_Tasks(var a, var b){
+        if( taskDistances[a.id] > taskDistances[b.id]){
+          return 1; //a is a closer distance
+        }else{
+          return -1; //a ordered after cause longer distance
+        }
+      }
+
+      //Sort the 3 lists by Distance
+      
+      if(list1 != null) list1.sort( (a,b) => sort_Tasks(a, b) );
+      if(list2 != null) list2.sort( (a,b) => sort_Tasks(a, b) );
+      if(list3 != null) list3.sort( (a,b) => sort_Tasks(a, b) );
+
+      //Merge 3 lists into one in correct order based on priority!
+      List<Task> mainTasks=[];
+      if(list1 != null) for (var item in list1) mainTasks.add(item);
+      if(list2 != null) for (var item in list2) mainTasks.add(item);    
+      if(list3 != null) for (var item in list3) mainTasks.add(item);
+
+      //Return mainTasks
+      return mainTasks;
+
   }
 
   void getUnscheduledTasks() async {
