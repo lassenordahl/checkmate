@@ -24,7 +24,7 @@ class Task {
       endTime: json['end_time'] == null ? DateTime.now() : DateTime.parse(json['end_time']), 
       lat: double.parse(json['lat']), 
       long: double.parse(json['long']),
-      priority: json['priority'] == null ? 5 : json['priority']
+      priority: json['priority'] == null ? 3 : json['priority']
     );
   }
 
