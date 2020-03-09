@@ -55,14 +55,14 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   }
 
   void submitForm() {
-    
     currentTask.priority = priority;
     currentTask.taskTime = taskTime;
 
     if (usingRecommended) {
       currentTask.startTime = DateTime.parse(selectedRecTime.isoTime);
     } else {
-      currentTask.startTime = DateTime(selectedDay.year, selectedDay.month, selectedDay.day, selectedTime.hour, selectedTime.minute, 0);
+      currentTask.startTime = DateTime(selectedDay.year, selectedDay.month,
+          selectedDay.day, selectedTime.hour, selectedTime.minute, 0);
     }
 
     if (currentTask.id == null) {
@@ -95,7 +95,8 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
       if (currentTask.taskType != null) {
         getTimes(currentTask.taskType, taskTime);
       }
-    };
+    }
+    ;
   }
 
   void generateWeek() {
@@ -122,11 +123,13 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
       Map<String, List<ScheduleTime>> recommendedTimes) {
     List<ScheduleTime> times = new List<ScheduleTime>();
 
-
-
     if (currentTask.startTime != null) {
-      times.add(ScheduleTime(completed: -1, isoTime: "Current Time", taskType: ""));
-      ScheduleTime current = ScheduleTime(completed: 0, isoTime: currentTask.startTime.toIso8601String(), taskType: currentTask.taskType);
+      times.add(
+          ScheduleTime(completed: -1, isoTime: "Current Time", taskType: ""));
+      ScheduleTime current = ScheduleTime(
+          completed: 0,
+          isoTime: currentTask.startTime.toIso8601String(),
+          taskType: currentTask.taskType);
       times.add(current);
       setState(() {
         usingRecommended = true;
@@ -251,27 +254,34 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
             ],
           ),
           SizedBox(height: 22.0),
-          Text(
-            "Location",
-            style: TextStyle(
-                color: widget.textColor,
-                fontSize: 22,
-                fontWeight: FontWeight.w800),
-          ),
-          SizedBox(height: 12.0),
-          Container(
-            constraints: BoxConstraints(maxWidth: 1350),
-            child: SearchMapPlaceWidget(
-              apiKey:
-                  'AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY', // YOUR GOOGLE MAPS API KEY
-              onSelected: (Place place) async {
-                print(place.description);
-                final geolocation = await place.geolocation;
-                print(geolocation);
-              },
-            ),
-          ),
-          SizedBox(height: 12.0),
+          (currentTask.id == null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Location",
+                      style: TextStyle(
+                          color: widget.textColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    SizedBox(height: 12.0),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 1350),
+                      child: SearchMapPlaceWidget(
+                        apiKey:
+                            'AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY', // YOUR GOOGLE MAPS API KEY
+                        onSelected: (Place place) async {
+                          print(place.description);
+                          final geolocation = await place.geolocation;
+                          print(geolocation);
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                  ],
+                )
+              : SizedBox(height: 0.0)),
           Text(
             "Priority",
             style: TextStyle(
@@ -323,7 +333,8 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
             items: <int>[1, 2, 3].map<DropdownMenuItem<int>>((int value) {
               return DropdownMenuItem<int>(
                 value: value,
-                child: Text(value.toString() + (value == 1 ? " hour" : " hours")),
+                child:
+                    Text(value.toString() + (value == 1 ? " hour" : " hours")),
               );
             }).toList(),
           ),
