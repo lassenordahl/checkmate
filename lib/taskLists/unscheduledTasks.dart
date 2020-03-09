@@ -67,22 +67,11 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
         return 12742 * asin(sqrt(a));
       }
 
-
-    //Sort by Distance
-    tasks.sort((a, b) {
-      if (taskDistances[a.id] > taskDistances[b.id]) {
-        return 1; //a is a closer distance
-      } else {
-        return -1; //a ordered after cause longer distance
+      //Assing each task a distance of current location from task
+      HashMap taskDistances = new HashMap<String, double>(); // (Task_id, distanceFromTask)
+      for (var item in tasks) {
+          taskDistances[item.id] = getDistance(item.lat, item.long);
       }
-    });
-
-    //TODO - Merge 3 lists into one in correct order based on priority!
-    //List<Task> mainTasks
-    //for (var item in List3) mainTasks.add(item);
-    //for (var item in List2) mainTasks.add(item);
-    //for (var item in List1) mainTasks.add(item);
-
 
       //Sort Function
       int sort_Tasks(var a, var b){
@@ -107,7 +96,6 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
 
       //Return mainTasks
       return mainTasks;
-
   }
 
   void getUnscheduledTasks() async {
