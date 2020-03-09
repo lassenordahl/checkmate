@@ -154,16 +154,6 @@ class HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        // RaisedButton(
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => Login()));
-                        //   },
-                        //   child: const Text('Login',
-                        //       style: TextStyle(fontSize: 20)),
-                        // ),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

@@ -19,6 +19,24 @@ Map<String, String> requestHeaders = {
      };
 
 
+Future<Map<String,List<ScheduleTime>>> getRecommendedTimes(String taskType) async {
+  final response =
+      await http.get(knnUrl + '/1/times/recommended?task_type=' + taskType, headers: requestHeaders);
+
+  if (response.statusCode == 200) {
+    Map<String, List<ScheduleTime>> returnMap = new Map<String, List<ScheduleTime>>();
+    json.decode(response.body).forEach((item, value) {
+      returnMap[item] = value.map<ScheduleTime>((obj) => ScheduleTime.fromJson(obj)).toList();
+    });
+    return returnMap;
+  } else {
+    print(response);
+    print(response.statusCode);
+    throw Exception("You done fucked up you dumb ho");
+  }
+}
+
+
 Future<List<ScheduleTime>> getAnnotatedTimes(String taskType) async {
   final response =
       await http.get(knnUrl + '/1/times?task_type=' + taskType, headers: requestHeaders);
@@ -81,6 +99,23 @@ void putCompleted(String taskId, int completed, Function getTasks) async {
     // If the server did not return a 200 OK response, then throw an exception.
     throw Exception('Failed to update completion');
   }
+}
+
+void putTask(Task task) async {
+  // String jsonObject = '{"task_id": "'+  taskId + '", "completed": "' + completed.toString() + '"}';
+
+  print(json.encode(task.toJson()));
+
+  // final response =
+  //     await http.put('https://bttmns45mb.execute-api.us-west-2.amazonaws.com/development/task/completed', headers: requestHeaders, body: jsonObject);
+
+  // if (response.statusCode == 200) {
+  //   putCompletedKNN(Task.fromJson(json.decode(response.body)['data']));
+  //   getTasks();
+  // } else {
+  //   // If the server did not return a 200 OK response, then throw an exception.
+  //   throw Exception('Failed to update completion');
+  // }
 }
 
 void putCompletedKNN(Task completedTask) async {
