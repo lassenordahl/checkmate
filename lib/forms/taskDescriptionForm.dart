@@ -2,15 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-
+// import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 import '../components/typeTagButton.dart';
 import '../objects/Task.dart';
 import '../objects/ScheduleTime.dart';
 import '../search_map_place/search_map_place.dart';
+import '../time-spinner/flutter_time_picker_spinner.dart';
 import '../api/api.dart';
-
 
 class TaskDescriptionForm extends StatefulWidget {
   final Task selectedTask;
@@ -29,23 +28,33 @@ class TaskDescriptionForm extends StatefulWidget {
 // This class holds data related to the form.
 class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   Task currentTask = new Task();
-  // currentTask.taskType = widget.selectedTask.taskType;
-  List<String> validTypes = ["exercise", "academic", "personal", "meeting", "work"];
-  List<ScheduleTime> availableTimes = [];
 
+  List<ScheduleTime> availableTimes = [];
   int placeholderPriority = 1;
-  // ScheduleTime selectedTime;
+  ScheduleTime selectedRecTime;
   DateTime selectedTime;
+  DateTime selectedDay;
+  bool usingRecommended = false;
+
+  List<DateTime> nextWeek;
 
   @override
   void initState() {
-    currentTask.taskType = widget.selectedTask.taskType;
+    currentTask = widget.selectedTask;
+    // currentTask.taskType = widget.selectedTask.taskType;
+    updateTaskType(currentTask.taskType);
+    generateWeek();
   }
 
   void submitForm() {
     print("FORM INFORMATION");
-    print(currentTask.name);
-    print(currentTask.description);
+
+    if (currentTask.id == null) {
+      // Post a task
+    } else {
+      // Put a task
+      putTask(currentTask);
+    }
   }
 
   void updateTaskType(String type) {
@@ -56,17 +65,50 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
     getTimes(type);
   }
 
+  void generateWeek() {
+    List<DateTime> week = new List<DateTime>();
+    for (int i = 0; i < 7; i++) {
+      week.add(DateTime.now().add(Duration(days: i)));
+    }
+    print(week);
+    setState(() {
+      nextWeek = week;
+    });
+  }
+
   void getTimes(String type) async {
-    List<ScheduleTime> times = await getAnnotatedTimes(type);
+    Map<String, List<ScheduleTime>> recommendedTimes =
+        await getRecommendedTimes(type);
 
     setState(() {
-      availableTimes = times;
+      availableTimes = _getTimesFromRecommended(recommendedTimes);
     });
-    print(times);
+  }
+
+  List<ScheduleTime> _getTimesFromRecommended(
+      Map<String, List<ScheduleTime>> recommendedTimes) {
+    List<ScheduleTime> times = new List<ScheduleTime>();
+
+    String prevWeekday = "";
+    recommendedTimes.forEach((weekday, listedTimes) {
+      if (weekday != prevWeekday) {
+        times.add(ScheduleTime(completed: -1, isoTime: weekday, taskType: ""));
+        prevWeekday = weekday;
+      }
+      times.addAll(listedTimes);
+    });
+
+    return times;
   }
 
   _formatTime(DateTime startTime) {
     var formatter = new DateFormat('MMM dd,').add_jm();
+    String formattedDate = formatter.format(startTime);
+    return formattedDate; // 2016-01-25
+  }
+
+  _formatDay(DateTime startTime) {
+    var formatter = new DateFormat('MMM d');
     String formattedDate = formatter.format(startTime);
     return formattedDate; // 2016-01-25
   }
@@ -91,7 +133,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               // The validator receives the text that the user has entered.
               initialValue: widget.selectedTask.name,
               decoration: new InputDecoration(
-                hintText: 'Name',
+                labelText: 'Name',
                 focusColor: Color(0xfff88379),
               ),
               style: new TextStyle(color: widget.textColor),
@@ -192,17 +234,14 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 12.0,),
+          SizedBox(
+            height: 12.0,
+          ),
           DropdownButton<int>(
             isExpanded: true,
             value: placeholderPriority,
             icon: Icon(Icons.arrow_downward),
             iconSize: 24,
-            // elevation: 16,
-            // underline: Container(
-            //   height: 2,
-            //   color: Colors.deepPurpleAccent,
-            // ),
             onChanged: (int newValue) {
               setState(() {
                 placeholderPriority = newValue;
@@ -217,20 +256,102 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
           ),
           SizedBox(height: 18.0),
           Text(
-            "Start Time",
+            "Recommended Times",
             style: TextStyle(
-                color: widget.textColor,
+                color: usingRecommended ? widget.textColor : Colors.grey,
+                fontSize: 22,
+                fontWeight: FontWeight.w800),
+          ),
+          DropdownButton<ScheduleTime>(
+            isExpanded: true,
+            hint: Text('Time'),
+            value: selectedRecTime,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24,
+            onChanged: (ScheduleTime newValue) {
+              if (newValue.completed != -1) {
+                setState(() {
+                  selectedRecTime = newValue;
+                  selectedTime = DateTime.parse(newValue.isoTime);
+                  selectedDay = null;
+                  usingRecommended = true;
+                });
+              }
+            },
+            items: availableTimes
+                .map<DropdownMenuItem<ScheduleTime>>((ScheduleTime value) {
+              return DropdownMenuItem<ScheduleTime>(
+                value: value,
+                child: Text(() {
+                  if (value.completed != -1) {
+                    return _formatTime(DateTime.parse(value.isoTime));
+                  } else {
+                    return value.isoTime;
+                  }
+                }(),
+                    style: TextStyle(
+                        color: () {
+                          if (value.completed == 1) {
+                            return Colors.green;
+                          } else if (value.completed == -2) {
+                            return Colors.red;
+                          } else {
+                            return Colors.black;
+                          }
+                        }(),
+                        fontSize: 14,
+                        fontWeight: value.completed == -1
+                            ? FontWeight.w800
+                            : FontWeight.w400)),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 12.0),
+          Text(
+            "Select a Day",
+            style: TextStyle(
+                color: !usingRecommended ? widget.textColor : Colors.grey,
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
           SizedBox(height: 12.0),
-          SizedBox(height: 200.0, child: 
+          DropdownButton<DateTime>(
+            isExpanded: true,
+            value: selectedDay,
+            hint: Text('Day'),
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24,
+            onChanged: (DateTime newValue) {
+              setState(() {
+                selectedDay = newValue;
+                selectedRecTime = null;
+                usingRecommended = false;
+              });
+            },
+            items: nextWeek.map<DropdownMenuItem<DateTime>>((DateTime value) {
+              return DropdownMenuItem<DateTime>(
+                value: value,
+                child: Text(_formatDay(value)),
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 12.0),
+          Text(
+            "Select a Time",
+            style: TextStyle(
+                color: !usingRecommended ? widget.textColor : Colors.grey,
+                fontSize: 22,
+                fontWeight: FontWeight.w800),
+          ),
+          SizedBox(height: 12.0),
           TimePickerSpinner(
             is24HourMode: true,
             normalTextStyle: TextStyle(
-              fontSize: 18,
-              color: Colors.black
-            ),
+                fontSize: 18,
+                color: !usingRecommended ? Colors.black : Colors.grey),
+            highlightedTextStyle: TextStyle(
+                fontSize: 24,
+                color: !usingRecommended ? Colors.black : Colors.grey),
             minutesInterval: 30,
             spacing: 30,
             itemHeight: 40,
@@ -238,37 +359,11 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
             onTimeChange: (time) {
               setState(() {
                 selectedTime = time;
+                usingRecommended = false;
+                selectedRecTime = null;
               });
             },
           ),
-          ), 
-          
-          // DropdownButton<ScheduleTime>(
-          //   isExpanded: true,
-          //   value: selectedTime,
-          //   icon: Icon(Icons.arrow_downward),
-          //   iconSize: 24,
-          //   // elevation: 16,
-          //   // underline: Container(
-          //   //   height: 2,
-          //   //   color: Colors.deepPurpleAccent,
-          //   // ),
-          //   onChanged: (ScheduleTime newValue) {
-          //     setState(() {
-          //       selectedTime = newValue;
-          //     });
-          //   },
-          //   items: availableTimes.map<DropdownMenuItem<ScheduleTime>>((ScheduleTime value) {
-          //     return DropdownMenuItem<ScheduleTime>(
-          //       value: value,
-          //       child: Text(_formatTime(DateTime.parse(value.isoTime)), style: TextStyle(
-          //         color: value.completed == 1 ? Colors.green : Colors.red,
-          //         fontSize: 14,
-          //         fontWeight: FontWeight.w400
-          //       )),
-          //     );
-          //   }).toList(),
-          // ),
           SizedBox(height: 12.0),
           Text(
             "Priority",
@@ -280,17 +375,13 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
           SizedBox(height: 12.0),
           DropdownButton<int>(
             isExpanded: true,
-            value: placeholderPriority,
+            hint: Text("Priority"),
+            value: currentTask.priority,
             icon: Icon(Icons.arrow_downward),
             iconSize: 24,
-            // elevation: 16,
-            // underline: Container(
-            //   height: 2,
-            //   color: Colors.deepPurpleAccent,
-            // ),
             onChanged: (int newValue) {
               setState(() {
-                placeholderPriority = newValue;
+                currentTask.priority = newValue;
               });
             },
             items: <int>[1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
