@@ -176,7 +176,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 fontSize: 22,
                 fontWeight: FontWeight.w800),
           ),
-          SizedBox(height: 12.0),
+          SizedBox(height: 6.0),
           TextFormField(
               // The validator receives the text that the user has entered.
               initialValue: widget.selectedTask.name,
@@ -338,7 +338,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
               );
             }).toList(),
           ),
-          SizedBox(height: 18.0),
+          SizedBox(height: 12.0),
           Text(
             "Recommended Times",
             style: TextStyle(

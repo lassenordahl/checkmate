@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
 
   _getDateString() {
     var now = new DateTime.now();
-    var formatter = new DateFormat('MMM dd, yyyy');
+    var formatter = new DateFormat('MMM dd, yyyy -').add_jm();
     String formattedDate = formatter.format(now);
     return formattedDate; // 2016-01-25
   }

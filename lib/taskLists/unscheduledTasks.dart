@@ -212,7 +212,8 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                       Padding(
                         padding: EdgeInsets.only(top: 14.0),
                         child: Text(
-                          _formatTime(task.startTime, task.taskTime),
+                          "Priority: " + task.priority.toString(),
+                          // _formatTime(task.startTime, task.taskTime),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -224,13 +225,13 @@ class UnscheduledTasksState extends State<UnscheduledTasks> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        task.priority.toString(),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400),
-                      )
+                      // Text(
+                      //   task.priority.toString(),
+                      //   style: TextStyle(
+                      //       color: Colors.black,
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.w400),
+                      // )
                     ],
                   ),
                 ],
