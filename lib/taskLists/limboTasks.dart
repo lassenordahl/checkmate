@@ -66,7 +66,7 @@ class LimboTasksState extends State<LimboTasks> {
               },
             ),
             new FlatButton(
-              child: new Text("Cancel"),
+              child: new Text("Close Task"),
               onPressed: () {
                 Navigator.of(context).pop();
                 putCompleted(taskId, completed, getPastTasks);

@@ -407,7 +407,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
             iconSize: 24,
             onChanged: (DateTime newValue) {
               setState(() {
-                selectedDay = newValue;
+                selectedDay = newValue.toUtc();
                 selectedRecTime = null;
                 usingRecommended = false;
               });
@@ -442,7 +442,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
             isForce2Digits: true,
             onTimeChange: (time) {
               setState(() {
-                selectedTime = time;
+                selectedTime = time.toUtc();
                 usingRecommended = false;
                 selectedRecTime = null;
               });
