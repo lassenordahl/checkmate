@@ -113,6 +113,33 @@ Future<List<Task>> getUnscheduled() async {
   }
 }
 
+//Get Time from one location to another location
+Future<String> getDuration(String origin, String destination) async {
+  //origin format ex: 33.640495, -117.844296
+  //destination format ex: 34.052235, -118.243683 
+
+  String url = 'https://maps.googleapis.com/maps/api/distancematrix/json?' 
+      + "origins=" + origin
+      + "&destinations=" + destination
+      + "&key=AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY";
+  print(url);
+  final response =
+      await http.post(url);
+
+  if (response.statusCode == 200) {
+    //Grab the time
+    Map<String, dynamic> destinationMatrix = json.decode(response.body);
+    print(destinationMatrix);
+    String time = destinationMatrix['rows'][0]['elements'][0]['duration']['text'];
+    print(time);
+    return time;
+  } else {
+    // If the server did not return a 200 OK response, then throw an exception.
+    throw Exception('Failed to get Time');
+  }
+
+}
+
 void putCompleted(String taskId, int completed, Function getTasks) async {
   String jsonObject = '{"task_id": "' +
       taskId +

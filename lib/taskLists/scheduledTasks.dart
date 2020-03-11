@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
@@ -20,6 +21,8 @@ class ScheduledTasks extends StatefulWidget {
 
 class ScheduledTasksState extends State<ScheduledTasks> {
   List<Task> _scheduledTasks = [];
+  String first_task_time;
+  String first_task_id;
 
   @override
   void initState() {
@@ -28,8 +31,11 @@ class ScheduledTasksState extends State<ScheduledTasks> {
 
   void getScheduledTasks() async {
     List<Task> dbTasks = await getScheduled();
+    String tempTime = await _firstTaskDuration(dbTasks[0].lat, dbTasks[0].long);
     setState(() {
       _scheduledTasks = dbTasks;
+      first_task_id = dbTasks[0].id;
+      first_task_time = tempTime;
     });
     print(_scheduledTasks);
   }
@@ -75,6 +81,40 @@ class ScheduledTasksState extends State<ScheduledTasks> {
     String formattedDate = formatter.format(startTime);
     String endFormattedDate = endFormatter.format(endTime);
     return formattedDate + " - " + endFormattedDate; // 2016-01-25
+  }
+
+  _firstTaskDuration(double lat, double long) async {
+    
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    String origin = position.latitude.toString() + ", " + position.longitude.toString();
+    String destination = lat.toString() + ", " + long.toString();
+
+    return await getDuration(origin, destination);   
+  }
+
+  _firstTaskWidget(String taskId){
+    if(taskId == first_task_id){
+      return Padding(
+          padding: EdgeInsets.only(top: 14.0),
+          child: Text(
+            " ETA: " + first_task_time,
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 13,
+                fontWeight: FontWeight.w400),
+          ));
+    }
+    
+      return Padding(
+          padding: EdgeInsets.only(top: 14.0),
+          child: Text(
+            "",
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 13,
+                fontWeight: FontWeight.w400),
+          ));
+    
   }
 
   // Build a single todo item
@@ -132,6 +172,8 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                           TaskTypeTag(taskType: task.taskType, activated: 0),
                         ],
                       ),
+                      Row(
+                        children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 14.0),
                         child: Text(
@@ -141,7 +183,10 @@ class ScheduledTasksState extends State<ScheduledTasks> {
                               fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
-                      )
+                      ),
+                      _firstTaskWidget(task.id)
+                      ],
+                      ),
                     ],
                   ),
                   Column(
