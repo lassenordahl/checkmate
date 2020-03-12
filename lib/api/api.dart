@@ -103,6 +103,11 @@ Future<List<Task>> getUnscheduled() async {
       headers: requestHeaders);
 
   if (response.statusCode == 200) {
+    print("UNSCHEDULED");
+    print(json
+        .decode(response.body)['data']
+        .map<Task>((task) => Task.fromJson(task))
+        .toList());
     return json
         .decode(response.body)['data']
         .map<Task>((task) => Task.fromJson(task))
@@ -119,7 +124,7 @@ Future<String> getDuration(String origin, String destination) async {
   //destination format ex: 34.052235, -118.243683 
 
   String url = 'https://maps.googleapis.com/maps/api/distancematrix/json?' 
-      + "origins=" + origin
+      + "origins=" + "33.640495, -117.844296"
       + "&destinations=" + destination
       + "&key=AIzaSyAKlXJEHJl_LWnCoAZ6yzVZ4_ClomAS6QY";
   print(url);
@@ -161,8 +166,8 @@ void putCompleted(String taskId, int completed, Function getTasks) async {
   }
 }
 
-void postTask(Task task) async {
-  String jsonObject = json.encode(task.toJson(true));
+void postTask(Task task, bool isTimeSelected) async {
+  String jsonObject = json.encode(task.toJson(true, isTimeSelected));
 
   print(awsUrl + '/development/task');
   print(jsonObject);

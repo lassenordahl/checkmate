@@ -36,6 +36,8 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
   DateTime selectedTime;
   DateTime selectedDay;
   bool usingRecommended = false;
+  bool timeHasBeenSelected = false;
+  int timeSelectCount = 0; // this is getting bad im sorry
 
   List<DateTime> nextWeek;
 
@@ -44,6 +46,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
     currentTask = widget.selectedTask;
     if (widget.selectedTask.taskTime != null) {
       taskTime = widget.selectedTask.taskTime;
+      timeHasBeenSelected = true;
     }
 
     if (widget.selectedTask.priority != null) {
@@ -58,17 +61,20 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
     currentTask.priority = priority;
     currentTask.taskTime = taskTime;
 
-    if (usingRecommended) {
-      currentTask.startTime = DateTime.parse(selectedRecTime.isoTime);
-    } else {
-      currentTask.startTime = DateTime(selectedDay.year, selectedDay.month,
-          selectedDay.day, selectedTime.hour, selectedTime.minute, 0);
+    if (timeHasBeenSelected) {
+      if (usingRecommended) {
+        currentTask.startTime = DateTime.parse(selectedRecTime.isoTime);
+      } else {
+        currentTask.startTime = DateTime(selectedDay.year, selectedDay.month,
+            selectedDay.day, selectedTime.hour, selectedTime.minute, 0);
+      }
     }
+    
 
     if (currentTask.id == null) {
       // Post a task
       print("in post");
-      postTask(currentTask);
+      postTask(currentTask, timeHasBeenSelected);
     } else {
       // Put a task
       print("not in post");
@@ -359,6 +365,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                   selectedTime = DateTime.parse(newValue.isoTime);
                   selectedDay = null;
                   usingRecommended = true;
+                  timeHasBeenSelected = true;
                 });
               }
             },
@@ -410,6 +417,7 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 selectedDay = newValue.toUtc();
                 selectedRecTime = null;
                 usingRecommended = false;
+                timeHasBeenSelected = true;
               });
             },
             items: nextWeek.map<DropdownMenuItem<DateTime>>((DateTime value) {
@@ -445,6 +453,10 @@ class TaskDescriptionFormState extends State<TaskDescriptionForm> {
                 selectedTime = time.toUtc();
                 usingRecommended = false;
                 selectedRecTime = null;
+                if (timeSelectCount > 0) {
+                  timeHasBeenSelected = true;
+                }
+                timeSelectCount++;
               });
             },
           ),

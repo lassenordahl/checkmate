@@ -29,14 +29,14 @@ class Task {
     );
   }
 
-  Map<String, dynamic> toJson(bool newTask) {
+  Map<String, dynamic> toJson(bool newTask, bool isTimeSelected) {
     Map<String, dynamic> returnMap = {
       'name': name,
       'description': description,
       'type': taskType,
-      'start_time': startTime.toIso8601String(),
-      'lat': "33",
-      'long': "33",
+      'start_time': isTimeSelected ? startTime.toIso8601String() : "-1",
+      'lat': "33.643428",
+      'long': "-117.828058",
       'task_time': taskTime,
       'priority': priority,
     };

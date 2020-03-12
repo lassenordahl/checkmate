@@ -95,9 +95,9 @@ class ScheduledTasksState extends State<ScheduledTasks> {
   _firstTaskWidget(String taskId){
     if(taskId == first_task_id){
       return Padding(
-          padding: EdgeInsets.only(top: 14.0),
+          padding: EdgeInsets.only(top: 14.0, left: 20),
           child: Text(
-            " ETA: " + first_task_time,
+            first_task_time + " away",
             style: TextStyle(
                 color: Colors.green,
                 fontSize: 13,
